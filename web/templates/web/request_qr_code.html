@@ -1,0 +1,130 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Precious Honey</title>
+
+    <!-- Meta -->
+    {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:title" content="Admin Templates - Dashboard Templates">
+    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:type" content="Website">
+    <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
+
+    <!-- *************
+		************ CSS Files *************
+	************* -->
+    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+
+    <!-- *************
+		************ Vendor Css Files *************
+	************ -->
+
+    <!-- Scrollbar CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+
+    <!-- Data Tables -->
+    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5-custom.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5-custom_1.css' %}">
+  </head>
+
+  <body>
+
+          <!-- App hero header starts -->
+          <div class="app-hero-header d-flex align-items-center">
+
+            <!-- Breadcrumb starts -->
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+                <a href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="breadcrumb-item text-primary" aria-current="page">
+                Create QR Code
+              </li>
+            </ol>
+            <!-- Breadcrumb ends -->
+
+            <!-- Sales stats starts -->
+            <div class="ms-auto d-lg-flex d-none flex-row">
+              <div class="d-flex flex-row gap-1 day-sorting">
+                <button class="btn btn-sm btn-primary">Create QR Code</button>
+              </div>
+            </div>
+            <!-- Sales stats ends -->
+
+          </div>
+          <!-- App Hero header ends -->
+
+          <!-- App body starts -->
+          <div class="app-body">
+
+            <!-- Row starts -->
+            <div class="row gx-3">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title">Create QR Code</h5>
+                    <a href="" class="btn btn-primary ms-auto">Create Qr Code</a>
+                  </div>
+                  <div class="card-body">
+                    {% for k in messages %}
+                    <p style="color:red;">{{k}}</p>
+                     {% endfor %}
+
+                     <form method="POST" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      <label for="qr_code_name">QR Code Name:</label>
+                      <input type="text" id="qr_code_name" name="qr_code_name" required>
+                      <br><br>
+                      <label for="image">Upload Background Image:</label>
+                      <input type="file" id="image" name="image" accept="image/*" required>
+                      <br><br>
+                      <button type="submit" class="btn btn-sm btn-primary">Generate QR Codes</button>
+                      {% if error %}
+                          <p style="color: red;">{{ error }}</p>
+                      {% endif %}
+                  </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Row ends -->
+
+          </div>
+          <!-- App body ends -->
+
+    <!-- *************
+			************ JavaScript Files *************
+		************* -->
+    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    {% comment %} <script src="{% static 'web/js/jquery.min.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'web/js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'web/js/moment.min.js' %}"></script> {% endcomment %}
+
+    <!-- *************
+			************ Vendor Js Files *************
+		************* -->
+
+    <!-- Overlay Scroll JS -->
+    {% comment %} <script src="{% static 'web/js/jquery.overlayScrollbars.min.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'web/js/custom-scrollbar.js' %}"></script>  {% endcomment %}
+
+    <!-- Data Tables -->
+    <script src="{% static 'web/js/dataTables.min.js' %}"></script>
+    <script src="{% static 'web/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'web/js/custom-datatables.js' %}"></script>
+
+    <!-- Custom JS files -->
+    {% comment %} <script src="{% static 'web/js/custom.js' %}"></script> {% endcomment %}
+  
+
+</body></html>
+
+{% endblock %}

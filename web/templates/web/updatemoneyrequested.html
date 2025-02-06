@@ -1,0 +1,188 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Precious Honey Update Requested Money</title>
+
+
+    <!-- *************
+		************ CSS Files *************
+	************* -->
+    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+
+    <!-- *************
+		************ Vendor Css Files *************
+	************ -->
+
+    <!-- Scrollbar CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+
+    <!-- Uploader CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/dropzone.min.css' %}">
+
+    <!-- Quill Editor -->
+    <link rel="stylesheet" href="{% static 'web/css/quill.core.css' %}">
+</head>
+
+<body>
+
+<!-- Loading starts -->
+<div id="loading-wrapper">
+    <div class="spin-wrapper">
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+    </div>
+</div>
+<!-- Loading ends -->
+
+<!-- App hero header starts -->
+<div class="app-hero-header d-flex align-items-center">
+
+    <!-- Breadcrumb starts -->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item text-primary" aria-current="page">
+            Update Requested Money
+        </li>
+    </ol>
+    <!-- Breadcrumb ends -->
+
+    <!-- Sales stats starts -->
+    <div class="ms-auto d-lg-flex d-none flex-row">
+        <div class="d-flex flex-row gap-1 day-sorting">
+            <button class="btn btn-sm btn-primary">Requested Moneys</button>
+        </div>
+    </div>
+    <!-- Sales stats ends -->
+
+</div>
+<!-- App Hero header ends -->
+
+<!-- App body starts -->
+<div class="app-body">
+
+    <!-- Row starts -->
+    <div class="row gx-3">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Custom tabs starts -->
+                    <div class="custom-tabs-container">
+
+                        <!-- Nav tabs starts -->
+                        <ul class="nav nav-tabs" id="customTab2" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="tab-oneA" data-bs-toggle="tab" href="#oneA" role="tab" aria-controls="oneA" aria-selected="true"><i class="ri-briefcase-4-line"></i> Requested Money Update</a>
+                            </li>
+                        </ul>
+                        <!-- Nav tabs ends -->
+
+                        <!-- Tab content starts -->
+                        <div class="tab-content h-350">
+                            {% for k in messages %}
+                            <p style="color:red;">{{k}}</p>
+                            {% endfor %}
+                            <div class="tab-pane fade show active" id="oneA" role="tabpanel">
+
+                                <form method="POST" enctype="multipart/form-data" action="{% url 'updatemoneyrequested' requestedmoney_instance.pk %}">
+                                    {% csrf_token %}
+                                    <!-- Row starts -->
+                                    <div class="row gx-3">
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a1">Purpose <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="purpose" id="a1" placeholder="Enter Money Purpose" value="{{ form.purpose.value|default:requestedmoney_instance.purpose }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Amount <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="amount" id="a2" placeholder="Enter Amount" value="{{ form.amount.value|default:requestedmoney_instance.amount }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Row ends -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tab content ends -->
+                    </div>
+                    <!-- Custom tabs ends -->
+
+                    <div class="d-flex gap-2 justify-content-end mt-4">
+                        <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Requested Money</button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Row ends -->
+
+</div>
+<!-- App body ends -->
+
+<!-- *************
+    ************ JavaScript Files *************
+************* -->
+<!-- Required jQuery first, then Bootstrap Bundle JS -->
+{% comment %} <script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/moment.min.js"></script> {% endcomment %}
+
+<!-- *************
+    ************ Vendor Js Files *************
+************* -->
+
+<!-- Overlay Scroll JS -->
+{% comment %} <script src="js/jquery.overlayScrollbars.min.js"></script> {% endcomment %}
+{% comment %} <script src="js/custom-scrollbar.js"></script> {% endcomment %}
+
+<!-- Dropzone JS -->
+<script src="{% static 'web/js/dropzone.min.js' %}"></script>
+
+<!-- Quill Editor JS -->
+<script src="{% static 'web/js/quill.min.js' %}"></script>
+<script src="{% static 'web/js/custom_1.js' %}"></script>
+
+</body></html>
+
+{% endblock %}

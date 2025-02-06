@@ -1,0 +1,554 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Precious Honey Information Management System</title>
+
+  <!-- Meta -->
+  {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
+  <meta property="og:title" content="Admin Templates - Dashboard Templates">
+  <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+  <meta property="og:type" content="Website">
+  <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
+
+  <!-- *************
+  ************ CSS Files *************
+************* -->
+  <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
+  <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+
+  <!-- *************
+  ************ Vendor Css Files *************
+************ -->
+
+  <!-- Scrollbar CSS -->
+  <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+</head>
+
+<body>
+
+  <!-- Loading starts -->
+  <div id="loading-wrapper">
+    <div class="spin-wrapper">
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Loading ends -->
+
+
+      <!-- App container starts -->
+      {% comment %} <div class="app-container"> {% endcomment %}
+
+        <!-- App hero header starts -->
+        <div class="app-hero-header d-flex align-items-center">
+
+          <!-- Breadcrumb starts -->
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+              <a href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="breadcrumb-item text-primary" aria-current="page">
+              Dashboard
+            </li>
+          </ol>
+          <!-- Breadcrumb ends -->
+
+          <!-- Sales stats starts -->
+          <div class="ms-auto d-lg-flex d-none flex-row">
+            <div class="d-flex flex-row gap-1 day-sorting">
+              <button class="btn btn-sm btn-primary">Welcome</button>
+            </div>
+          </div>
+          <!-- Sales stats ends -->
+
+        </div>
+        <!-- App Hero header ends -->
+        
+        <!-- App body starts -->
+        <div class="app-body">
+
+          <!-- Row starts -->
+          <div class="row gx-3">
+            <div class="col-xxl-12 col-sm-12">
+              <div class="card mb-3 bg-2">
+                <div class="card-body">
+                  <div class="py-4 px-3 text-white">
+                    <h6 id="greeting">Good...</h6>
+                    {% if gender == "male" %}
+                    <h2>Mr
+                    {% else %}
+                    <h2>Mis
+                    {% endif %}
+                      {{first_name}} 
+                      {{last_name}}</h2>
+                    <h5>Welcome to Precious Honey management system.</h5>
+                    <div class="mt-4 d-flex gap-3">
+                      <div class="d-flex align-items-center">
+                        <div class="icon-box lg bg-arctic rounded-3 me-3">
+                          <i class="ri-verified-badge-fill"></i>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <h2 class="m-0 lh-1">100%</h2>
+                          <p class="m-0">Trust</p>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <div class="icon-box lg bg-lime rounded-3 me-3">
+                          <i class="ri-chat-private-fill"></i>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <h2 class="m-0 lh-1">100%</h2>
+                          <p class="m-0">Security</p>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-center">
+                        <div class="icon-box lg bg-peach rounded-3 me-3">
+                          <i class="ri-dashboard-2-fill"></i>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <h2 class="m-0 lh-1">100%</h2>
+                          <p class="m-0">Help</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Row ends -->
+
+          <!-- Row starts -->
+          <div class="row gx-3">
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  {% if designation == "CEO" or designation == "Finance Officer" %}
+                  <div class="d-flex align-items-center">
+                    <div class="p-2 border border-warning rounded-circle me-3">
+                      <div class="icon-box md bg-warning-subtle rounded-5">
+                        <i class="ri-money-dollar-circle-line fs-4 text-warning"></i>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <h4 class="lh-1">Tsh {{ masteramount.amount }}</h4>
+                      <p class="m-0">Total Money</p>
+                    </div>
+                  </div>
+                  {% endif %}
+                  <div class="d-flex align-items-end justify-content-between mt-1">
+                    <a class="text-warning" href="javascript:void(0);">
+                      <span>View All</span>
+                      <i class="ri-arrow-right-line ms-1"></i>
+                    </a>
+                    <div class="text-end">
+                      <p class="mb-0 text-warning">+100%</p>
+                      <span class="badge bg-warning-subtle text-warning small">precious honey</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% for i in productp %}
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="p-2 border border-success rounded-circle me-3">
+                      <div class="icon-box md bg-success-subtle rounded-5">
+                        <i class="ri-radar-line fs-4 text-success"></i>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <h4 class="lh-1">{{i.honey}} Kg</h4>
+                      <p class="m-0">Total Honey</p>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-end justify-content-between mt-1">
+                    <a class="text-success" href="javascript:void(0);">
+                      <span>in store</span>
+                      <i class="ri-arrow-right-line text-success ms-1"></i>
+                    </a>
+                    <div class="text-end">
+                      <p class="mb-0 text-success">for sale</p>
+                      <span class="badge bg-success-subtle text-success small">Total honey</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="p-2 border border-primary rounded-circle me-3">
+                      <div class="icon-box md bg-primary-subtle rounded-5">
+                        <i class="ri-wallet-3-fill fs-4 text-primary"></i>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <h4 class="lh-1">{{i.wax}} Kg</h4>
+                      <p class="m-0">Total Wax</p>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-end justify-content-between mt-1">
+                    <a class="text-primary" href="javascript:void(0);">
+                      <span>in store</span>
+                      <i class="ri-arrow-right-line ms-1"></i>
+                    </a>
+                    <div class="text-end">
+                      <p class="mb-0 text-primary">for sale</p>
+                      <span class="badge bg-primary-subtle text-primary small">total wax</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% comment %} <div class="col-xl-3 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="p-2 border border-danger rounded-circle me-3">
+                      <div class="icon-box md bg-danger-subtle rounded-5">
+                        <i class="ri-money-dollar-circle-line fs-4 text-danger"></i>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <h4 class="lh-1">Tsh 98000000000.00</h4>
+                      <p class="m-0">Last Order</p>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-end justify-content-between mt-1">
+                    <a class="text-danger" href="javascript:void(0);">
+                      <span>View All</span>
+                      <i class="ri-arrow-right-line ms-1"></i>
+                    </a>
+                    <div class="text-end">
+                      <p class="mb-0 text-danger">+60%</p>
+                      <span class="badge bg-danger-subtle text-danger small">this month</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> {% endcomment %}
+           
+          </div>
+          <!-- Row ends -->
+
+          <!-- Row starts -->
+          <div class="row gx-3">
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-team-line"></i>
+                    </div>
+                    <h6>All Staff</h6>
+                    <h2 class="text-primary m-0">{{allstaff}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-group-line"></i>
+                    </div>
+                    <h6>Vendors</h6>
+                    <h2 class="text-primary m-0">{{vendors}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-team-fill"></i>
+                    </div>
+                    <h6>Collection Officer</h6>
+                    <h2 class="text-primary m-0">{{Collection}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-user-location-line"></i>
+                    </div>
+                    <h6>Store Keeper</h6>
+                    <h2 class="text-primary m-0">{{Store}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-user-heart-line"></i>
+                    </div>
+                    <h6>Finance Officer</h6>
+                    <h2 class="text-primary m-0">{{Finance}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-walk-line fs-4 lh-1"></i>
+                    </div>
+                    <h6>Marketing Officer</h6>
+                    <h2 class="text-primary m-0">{{Marketing}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-team-fill"></i>
+                    </div>
+                    <h6>Factory Manager</h6>
+                    <h2 class="text-primary m-0">{{Factory}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-user-settings-line"></i>
+                    </div>
+                    <h6>Customer</h6>
+                    <h2 class="text-primary m-0">{{Customer}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-user-voice-line"></i>
+                    </div>
+                    <h6>CEO</h6>
+                    <h2 class="text-primary m-0">{{CEO}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-team-fill"></i>
+                    </div>
+                    <h6>Farmers</h6>
+                    <h2 class="text-primary m-0">{{farmers}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-2 col-sm-6 col-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center">
+                    <div class="icon-box md rounded-5 bg-primary mb-3">
+                      <i class="ri-door-open-line"></i>
+                    </div>
+                    <h6>All Asset</h6>
+                    <h2 class="text-primary m-0">{{allasset}}</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Row ends -->
+
+          <!-- Row starts -->
+          <div class="row gx-3">
+
+            {% comment %} <div class="col-xxl-6 col-sm-12">
+              <div class="card mb-3">
+                <div class="card-header">
+                  <h5 class="card-title">Hospital Earnings</h5>
+                </div>
+                <div class="card-body">
+
+                  <!-- Row start -->
+                  <div class="row g-3">
+                    <div class="col-sm-6 col-12">
+                      <div class="border rounded-2 d-flex align-items-center flex-row p-2">
+                        <div class="me-2">
+                          <div id="sparkline1"></div>
+                        </div>
+                        <div class="m-0">
+                          <div class="d-flex align-items-center">
+                            <h4 class="m-0 fw-bold">$4900</h4>
+                            <div class="ms-2 text-primary d-flex">
+                              <small>20%</small> <i class="ri-arrow-right-up-line ms-1 fw-bold"></i>
+                            </div>
+                          </div>
+                          <small>Online Consultation</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                      <div class="border rounded-2 d-flex align-items-center flex-row p-2">
+                        <div class="me-2">
+                          <div id="sparkline2"></div>
+                        </div>
+                        <div class="m-0">
+                          <div class="d-flex align-items-center">
+                            <div class="fs-4 fw-bold">$750</div>
+                            <div class="ms-2 text-danger d-flex">
+                              <small>26%</small> <i class="ri-arrow-right-down-line ms-1 fw-bold"></i>
+                            </div>
+                          </div>
+                          <small class="text-dark">Overall Purchases</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                      <div class="border rounded-2 d-flex align-items-center flex-row p-2">
+                        <div class="me-2">
+                          <div id="sparkline3"></div>
+                        </div>
+                        <div class="m-0">
+                          <div class="d-flex align-items-center">
+                            <div class="fs-4 fw-bold">$560</div>
+                            <div class="ms-2 text-primary d-flex">
+                              <small>28%</small> <i class="ri-arrow-right-up-line ms-1 fw-bold"></i>
+                            </div>
+                          </div>
+                          <small class="text-dark">Pending Invoices</small>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                      <div class="border rounded-2 d-flex align-items-center flex-row p-2">
+                        <div class="me-2">
+                          <div id="sparkline4"></div>
+                        </div>
+                        <div class="m-0">
+                          <div class="d-flex align-items-center">
+                            <div class="fs-4 fw-bold">$390</div>
+                            <div class="ms-2 text-primary d-flex">
+                              <small>30%</small> <i class="ri-arrow-right-up-line ms-1 fw-bold"></i>
+                            </div>
+                          </div>
+                          <small class="text-dark">Monthly Billing</small>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Row ends -->
+
+                </div>
+              </div>
+            </div> {% endcomment %}
+
+          </div>
+          <!-- Row ends -->
+
+        </div>
+        <!-- App body ends -->
+
+      {% comment %} </div> {% endcomment %}
+      <!-- App container ends -->
+
+  <!-- *************
+    ************ JavaScript Files *************
+  ************* -->
+  <!-- Required jQuery first, then Bootstrap Bundle JS -->
+  {% comment %} <script src="{% static 'web/js/jquery.min.js' %}"></script>
+  <script src="{% static 'web/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'web/js/moment.min.js' %}"></script> {% endcomment %}
+
+  <!-- *************
+    ************ Vendor Js Files *************
+  ************* -->
+
+  <!-- Overlay Scroll JS -->
+  {% comment %} <script src="{% static 'web/js/jquery.overlayScrollbars.min.js' %}"></script>
+  <script src="{% static 'web/js/custom-scrollbar.js' %}"></script> {% endcomment %}
+
+  <!-- Apex Charts -->
+  <script src="{% static 'web/js/apexcharts.min.js' %}"></script>
+  <script src="{% static 'web/js/patients.js' %}"></script>
+  <script src="{% static 'web/js/treatment.js' %}"></script>
+  <script src="{% static 'web/js/available-beds.js' %}"></script>
+  <script src="{% static 'web/js/earnings.js' %}"></script>
+  <script src="{% static 'web/js/gender-age.js' %}"></script>
+  <script src="{% static 'web/js/claims.js' %}"></script>
+  <script>
+    // Function to get the appropriate greeting
+    function getGreeting() {
+        const now = new Date();
+        const hour = now.getHours();
+
+        if (hour < 6) {
+            return "Good Night,";
+        } else if (hour < 12) {
+            return "Good Morning,";
+        } else if (hour < 18) {
+            return "Good Afternoon,";
+        } else if (hour < 22) {
+            return "Good Evening,";
+        } else {
+            return "Good Night,";
+        }
+    }
+
+    // Set the greeting dynamically
+    document.getElementById("greeting").textContent = getGreeting();
+</script>
+
+  <!-- Custom JS files -->
+  {% comment %} <script src="{% static 'web/js/custom.js' %}"></script> {% endcomment %}
+
+
+</body></html>
+
+{% endblock %}

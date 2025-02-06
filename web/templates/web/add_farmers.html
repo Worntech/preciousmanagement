@@ -1,0 +1,413 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Precious Honey Add Farmer</title>
+
+    <!-- Meta -->
+    {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:title" content="Admin Templates - Dashboard Templates">
+    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:type" content="Website">
+    <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
+
+    <!-- *************
+		************ CSS Files *************
+	************* -->
+    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+
+    <!-- *************
+		************ Vendor Css Files *************
+	************ -->
+
+    <!-- Scrollbar CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+
+    <!-- Uploader CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/dropzone.min.css' %}">
+
+    <!-- Quill Editor -->
+    <link rel="stylesheet" href="{% static 'web/css/quill.core.css' %}">
+  </head>
+
+  <body>
+
+
+    <!-- Loading starts -->
+  <div id="loading-wrapper">
+    <div class="spin-wrapper">
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Loading ends -->
+
+
+          <!-- App hero header starts -->
+          <div class="app-hero-header d-flex align-items-center">
+
+            <!-- Breadcrumb starts -->
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+                <a href="{%url  'home' %}">Home</a>
+              </li>
+              <li class="breadcrumb-item text-primary" aria-current="page">
+                Add Farmers
+              </li>
+            </ol>
+            <!-- Breadcrumb ends -->
+
+            <!-- Sales stats starts -->
+            <div class="ms-auto d-lg-flex d-none flex-row">
+              <div class="d-flex flex-row gap-1 day-sorting">
+                <button class="btn btn-sm btn-primary">Farmers</button>
+              </div>
+            </div>
+            <!-- Sales stats ends -->
+
+          </div>
+          <!-- App Hero header ends -->
+
+          <!-- App body starts -->
+          <div class="app-body">
+
+            <!-- Row starts -->
+            <div class="row gx-3">
+              <div class="col-xl-12">
+                <div class="card">
+                  <div class="card-body">
+
+                    <!-- Custom tabs starts -->
+                    <div class="custom-tabs-container">
+
+                      <!-- Nav tabs starts -->
+                      <ul class="nav nav-tabs" id="customTab2" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link active" id="tab-oneA" data-bs-toggle="tab" href="#oneA" role="tab" aria-controls="oneA" aria-selected="true"><i class="ri-briefcase-4-line"></i> Farmer Registration</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link" id="tab-twoA" data-bs-toggle="tab" href="#twoA" role="tab" aria-controls="twoA" aria-selected="false"><i class="ri-account-pin-circle-line"></i>
+                            Farmer Details</a>
+                        </li>
+                      </ul>
+                      <!-- Nav tabs ends -->
+
+                      <!-- Tab content starts -->
+                      <div class="tab-content h-350">
+
+                        {% for k in messages %}
+                        <p style="color:red;">{{k}}</p>
+                        {% endfor %}
+
+                        <div class="tab-pane fade show active" id="oneA" role="tabpanel">
+
+                          <form method="POST" action="{% url 'add_farmers' %}">
+                            {% csrf_token %}
+                          <!-- Row starts -->
+                          <div class="row gx-3">
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a1">First Name <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-account-circle-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="first_name" id="a1" placeholder="Enter First Name">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a2">Midle Name <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-account-circle-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="middle_name" id="a2" placeholder="Enter Midle Name">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a3">Last Name <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-account-circle-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="last_name" id="a2" placeholder="Enter Last Name">
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                  <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                  <select name="gender" class="form-select" required>
+                                      <option value="male">Male</option>
+                                      <option value="female">Female</option>
+                                  </select>
+                              </div>
+                          </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Village/Street <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="village" id="a4" placeholder="Create Village/Street">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a5">Ward <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-mail-open-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="ward" id="a5" placeholder="Enter Ward">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a6">District <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-mail-open-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="district" id="a6" placeholder="Enter District">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a5">Region <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-mail-open-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="region" id="a7" placeholder="Enter Religion">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a8">Mobile Number <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-phone-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="mobile" id="a8" placeholder="Enter Mobile Number">
+                                </div>
+                              </div>
+                            </div>
+
+  
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a9">NIN Number</label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-projector-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="nin_number" id="a9" placeholder="Enter NIN Number">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a10">Postal Code</label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-qr-scan-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="postal_code" id="a10" placeholder="Enter Postal Code">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Row ends -->
+
+                        </div>
+                        <div class="tab-pane fade" id="twoA" role="tabpanel">
+
+                          <!-- Row starts -->
+                          <div class="row gx-3">
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Total behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="total_beehives" id="a4" placeholder="No of all behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">TTBH behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="ttb_beehives" id="a4" placeholder="No of TTBH behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Top Bar behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="top_bar_beehives"  id="a4" placeholder="No of Top Bar behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">TCH behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="tch_beehives" id="a4" placeholder="No of TCH behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">KTBH behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="ktbh_beehives" id="a4" placeholder="No of KTBH behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Local behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="local_beehives" id="a4" placeholder="No of Local behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Colonized behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="colonized_beehives" id="a4" placeholder="No of colonized behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Uncolonized  behives <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="uncolonized_beehives" id="a4" placeholder="No of uncolonized  behives">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Farmer Background <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="farmer_background" id="a4" placeholder="Background of Farmer">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Row ends -->
+
+                        </div>
+                      </div>
+                      <!-- Tab content ends -->
+
+                    </div>
+                    <!-- Custom tabs ends -->
+
+                    <div class="d-flex gap-2 justify-content-end mt-4">
+                      <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Register Farmer</button>
+                  </div>
+              </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Row ends -->
+
+          </div>
+          <!-- App body ends -->
+
+    <!-- *************
+			************ JavaScript Files *************
+		************* -->
+    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    {% comment %} <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/moment.min.js"></script> {% endcomment %}
+
+    <!-- *************
+			************ Vendor Js Files *************
+		************* -->
+
+    <!-- Overlay Scroll JS -->
+    {% comment %} <script src="js/jquery.overlayScrollbars.min.js"></script> {% endcomment %}
+    {% comment %} <script src="js/custom-scrollbar.js"></script> {% endcomment %}
+
+    <!-- Dropzone JS -->
+    <script src="{% static 'web/js/dropzone.min.js' %}"></script>
+
+    <!-- Quill Editor JS -->
+    <script src="{% static 'web/js/quill.min.js' %}"></script>
+    <script src="{% static 'web/js/custom_1.js' %}"></script>
+
+    <!-- Custom JS files -->
+    {% comment %} <script src="js/custom.js"></script> {% endcomment %}
+  
+
+</body></html>
+
+{% endblock %}

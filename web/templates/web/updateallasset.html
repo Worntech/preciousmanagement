@@ -1,0 +1,349 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Precious Honey Update All Asset</title>
+
+    <!-- Meta -->
+    {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:title" content="Admin Templates - Dashboard Templates">
+    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:type" content="Website">
+    <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
+
+    <!-- *************
+		************ CSS Files *************
+	************* -->
+    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+
+    <!-- *************
+		************ Vendor Css Files *************
+	************ -->
+
+    <!-- Scrollbar CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+
+    <!-- Uploader CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/dropzone.min.css' %}">
+
+    <!-- Quill Editor -->
+    <link rel="stylesheet" href="{% static 'web/css/quill.core.css' %}">
+</head>
+
+<body>
+
+<!-- Loading starts -->
+<div id="loading-wrapper">
+    <div class="spin-wrapper">
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+        <div class="spin">
+            <div class="inner"></div>
+        </div>
+    </div>
+</div>
+<!-- Loading ends -->
+
+<!-- App hero header starts -->
+<div class="app-hero-header d-flex align-items-center">
+
+    <!-- Breadcrumb starts -->
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+            <a href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item text-primary" aria-current="page">
+            Update all asset
+        </li>
+    </ol>
+    <!-- Breadcrumb ends -->
+
+    <!-- Sales stats starts -->
+    <div class="ms-auto d-lg-flex d-none flex-row">
+        <div class="d-flex flex-row gap-1 day-sorting">
+            <button class="btn btn-sm btn-primary">assets</button>
+        </div>
+    </div>
+    <!-- Sales stats ends -->
+
+</div>
+<!-- App Hero header ends -->
+
+<!-- App body starts -->
+<div class="app-body">
+
+    <!-- Row starts -->
+    <div class="row gx-3">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Custom tabs starts -->
+                    <div class="custom-tabs-container">
+
+                        <!-- Nav tabs starts -->
+                        <ul class="nav nav-tabs" id="customTab2" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active" id="tab-oneA" data-bs-toggle="tab" href="#oneA" role="tab" aria-controls="oneA" aria-selected="true"><i class="ri-briefcase-4-line"></i>All asset Update</a>
+                            </li>
+                        </ul>
+                        <!-- Nav tabs ends -->
+
+                        <!-- Tab content starts -->
+                        <div class="tab-content h-350">
+                            {% for k in messages %}
+                            <p style="color:red;">{{k}}</p>
+                            {% endfor %}
+                            <div class="tab-pane fade show active" id="oneA" role="tabpanel">
+
+                                <form method="POST" enctype="multipart/form-data" action="{% url 'updateallasset' allasset_instance.pk %}">
+                                    {% csrf_token %}
+                                    <!-- Row starts -->
+                                    <div class="row gx-3">
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a1">Tables <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Tables" id="a1" placeholder="Enter Tables" value="{{ form.Tables.value|default:allasset_instance.Tables }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Chairs <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Chairs" id="a2" placeholder="Enter Chairs" value="{{ form.Chairs.value|default:allasset_instance.Chairs }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Computers <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Computers" id="a2" placeholder="Enter Computers" value="{{ form.Computers.value|default:allasset_instance.Computers }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Motocycles <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Motocycles" id="a2" placeholder="Enter Motocycles" value="{{ form.Motocycles.value|default:allasset_instance.Motocycles }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Beehives <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Beehives" id="a2" placeholder="Enter Beehives" value="{{ form.Beehives.value|default:allasset_instance.Beehives }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Packages <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Packages" id="a2" placeholder="Enter Packages" value="{{ form.Packages.value|default:allasset_instance.Packages }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Labels <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Labels" id="a2" placeholder="Enter Labels" value="{{ form.Labels.value|default:allasset_instance.Labels }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Buckets <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Buckets" id="a2" placeholder="Enter Buckets" value="{{ form.Buckets.value|default:allasset_instance.Buckets }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Bee Suit <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Bee_suit" id="a2" placeholder="Enter Bee suit" value="{{ form.Bee_suit.value|default:allasset_instance.Bee_suit }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Gloves <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Gloves" id="a2" placeholder="Enter Gloves" value="{{ form.Gloves.value|default:allasset_instance.Gloves }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Hire Tools <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Hire_tools" id="a2" placeholder="Enter Hire tools" value="{{ form.Hire_tools.value|default:allasset_instance.Hire_tools }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Bee Smoker <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Bee_smoker" id="a2" placeholder="Enter Bee smoker" value="{{ form.Bee_smoker.value|default:allasset_instance.Bee_smoker }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Honey Press <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Honey_press" id="a2" placeholder="Enter Honey press" value="{{ form.Honey_press.value|default:allasset_instance.Honey_press }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Honey Strainer <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Honey_strainer" id="a2" placeholder="Enter Honey strainer" value="{{ form.Honey_strainer.value|default:allasset_instance.Honey_strainer }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Sandles <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Sandles" id="a2" placeholder="Enter Sandles" value="{{ form.Sandles.value|default:allasset_instance.Sandles }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="a2">Apron <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <i class="ri-account-circle-line"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" name="Apron" id="a2" placeholder="Enter Apron" value="{{ form.Apron.value|default:allasset_instance.Apron }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Row ends -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tab content ends -->
+                    </div>
+                    <!-- Custom tabs ends -->
+
+                    <div class="d-flex gap-2 justify-content-end mt-4">
+                        <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update all asset</button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Row ends -->
+
+</div>
+<!-- App body ends -->
+
+<!-- *************
+    ************ JavaScript Files *************
+************* -->
+<!-- Required jQuery first, then Bootstrap Bundle JS -->
+{% comment %} <script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/moment.min.js"></script> {% endcomment %}
+
+<!-- *************
+    ************ Vendor Js Files *************
+************* -->
+
+<!-- Overlay Scroll JS -->
+{% comment %} <script src="js/jquery.overlayScrollbars.min.js"></script> {% endcomment %}
+{% comment %} <script src="js/custom-scrollbar.js"></script> {% endcomment %}
+
+<!-- Dropzone JS -->
+<script src="{% static 'web/js/dropzone.min.js' %}"></script>
+
+<!-- Quill Editor JS -->
+<script src="{% static 'web/js/quill.min.js' %}"></script>
+<script src="{% static 'web/js/custom_1.js' %}"></script>
+
+</body></html>
+
+{% endblock %}

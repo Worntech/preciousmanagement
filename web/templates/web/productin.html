@@ -1,0 +1,74 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Precious Honey Add product</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/dropzone.min.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/quill.core.css' %}">
+</head>
+
+<body>
+    <div class="app-body">
+        <div class="row gx-3">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="custom-tabs-container">
+                            <ul class="nav nav-tabs" id="customTab2" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="tab-oneA" data-bs-toggle="tab" href="#oneA" role="tab" aria-controls="oneA" aria-selected="true">
+                                        <i class="ri-briefcase-4-line"></i> Add product
+                                    </a>
+                                </li>
+                            </ul>
+
+                            {% for k in messages %}
+                            <p style="color:red;">{{k}}</p>
+                            {% endfor %}
+
+                            <div class="tab-content h-350">
+                                <div class="tab-pane fade show active" id="oneA" role="tabpanel">
+                                    <form method="POST" action="{% url 'productin' %}">
+                                        {% csrf_token %}
+                                        <div class="row gx-3">
+                                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Honey in (Kg) <span class="text-danger">*</span></label>
+                                                    <input type="text" name="honey" class="form-control" placeholder="Enter Honey in Kg" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Wax in (Kg) <span class="text-danger">*</span></label>
+                                                    <input type="text" name="wax" class="form-control" placeholder="Enter Wax in Kg" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2 justify-content-end mt-4">
+                                <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Add Product</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}

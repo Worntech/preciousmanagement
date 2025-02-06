@@ -1,0 +1,207 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Precious Honey</title>
+
+    <!-- Meta -->
+    {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:title" content="Admin Templates - Dashboard Templates">
+    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
+    <meta property="og:type" content="Website">
+    <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
+
+    <!-- *************
+		************ CSS Files *************
+	************* -->
+    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+
+    <!-- *************
+		************ Vendor Css Files *************
+	************ -->
+
+    <!-- Scrollbar CSS -->
+    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+
+    <!-- Data Tables -->
+    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5-custom.css' %}">
+    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5-custom_1.css' %}">
+  </head>
+
+  <body>
+
+    <!-- Loading starts -->
+  <div id="loading-wrapper">
+    <div class="spin-wrapper">
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+      <div class="spin">
+        <div class="inner"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Loading ends -->
+
+          <!-- App hero header starts -->
+          <div class="app-hero-header d-flex align-items-center">
+
+            <!-- Breadcrumb starts -->
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+                <a href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="breadcrumb-item text-primary" aria-current="page">
+                Money Gained
+              </li>
+            </ol>
+            <!-- Breadcrumb ends -->
+
+            <!-- Sales stats starts -->
+            <div class="ms-auto d-lg-flex d-none flex-row">
+              <div class="d-flex flex-row gap-1 day-sorting">
+                <button class="btn btn-sm btn-primary">Money Gained</button>
+              </div>
+            </div>
+            <!-- Sales stats ends -->
+
+          </div>
+          <!-- App Hero header ends -->
+
+          <!-- App body starts -->
+          <div class="app-body">
+
+            <!-- Row starts -->
+            <div class="row gx-3">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header d-flex align-items-center justify-content-between">
+                    <h5 class="card-title">Money Gained</h5>
+                    <a href="add-patient.html" class="btn btn-primary ms-auto">Money Gained</a>
+                  </div>
+                  <div class="card-body">
+
+                    <!-- Table starts -->
+                    <div class="table-responsive">
+                      <table id="basicExample" class="table truncate m-0 align-middle">
+                        <thead>
+                          <tr>
+                            <th>User Name</th>
+                            <th>Processor</th>
+                            <th>Amount</th>
+                            <th>Money Source</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for i in moneyin %}
+                          <tr>
+                            <td>
+                              {{i.money_processor}}
+                            </td>
+                            <td>{{i.user}}</td>
+                            <td>{{i.amount}}</td>
+                            <td>{{i.money_source}}</td>
+                            <td>{{i.date_created}}</td>
+                            <td>
+                              <button 
+                                class="btn btn-outline-danger btn-sm" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deleteModal{{ i.pk }}">
+                                <i class="ri-delete-bin-line"></i>
+                             </button>
+
+                                <a href="{% url 'updatemoneyin' i.id %}" class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit Money Details">
+                                  <i class="ri-edit-box-line"></i>
+                                </a>
+                                <a href="{% url 'viewmoneyin' i.id %}" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View Money Gained">
+                                  <i class="ri-eye-line"></i>
+                                </a>
+                              </div>
+                            </td>
+                          </tr>
+
+                          <!-- Delete Confirmation Modal -->
+                          <div class="modal fade" id="deleteModal{{ i.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ i.pk }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel{{ i.pk }}">Confirm Deletion</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to delete this Money: {{ i.money_source }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <form method="POST" action="{% url 'deletemoneyin' i.pk %}">
+                                            {% csrf_token %}
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- Table ends -->
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Row ends -->
+
+          </div>
+          <!-- App body ends -->
+
+    <!-- *************
+			************ JavaScript Files *************
+		************* -->
+    <!-- Required jQuery first, then Bootstrap Bundle JS -->
+    {% comment %} <script src="{% static 'web/js/jquery.min.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'web/js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'web/js/moment.min.js' %}"></script> {% endcomment %}
+
+    <!-- *************
+			************ Vendor Js Files *************
+		************* -->
+
+    <!-- Overlay Scroll JS -->
+    {% comment %} <script src="{% static 'web/js/jquery.overlayScrollbars.min.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'web/js/custom-scrollbar.js' %}"></script>  {% endcomment %}
+
+    <!-- Data Tables -->
+    <script src="{% static 'web/js/dataTables.min.js' %}"></script>
+    <script src="{% static 'web/js/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'web/js/custom-datatables.js' %}"></script>
+
+    <!-- Custom JS files -->
+    {% comment %} <script src="{% static 'web/js/custom.js' %}"></script> {% endcomment %}
+  
+
+</body></html>
+
+{% endblock %}
