@@ -1,0 +1,79 @@
+{% extends "web/base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <h4 class="mb-0">Repayments</h4>
+    <a href="{% url 'repayment_create' %}" class="btn btn-primary ms-auto">New Repayment</a>
+  </div>
+
+  <form method="get" class="row g-2 mb-3">
+    <div class="col-sm-3">
+      <select name="type" class="form-select" onchange="this.form.submit()">
+        <option value="">All types</option>
+        <option value="incoming" {% if ftype == 'incoming' %}selected{% endif %}>Incoming</option>
+        <option value="outgoing" {% if ftype == 'outgoing' %}selected{% endif %}>Outgoing</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Party</th>
+          <th>Type</th>
+          <th class="text-end">This Payment</th>
+          <th class="text-end">Total Borrowed (from us)</th>
+          <th class="text-end">Total Paid</th>
+          <th class="text-end">Due to Us</th>
+          <th class="text-end">We Owe</th>
+          <th>When</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in page_obj.object_list %}
+          {% with t=r.party.totals_for_display %}
+          <tr>
+            <td>{{ r.party.name }}</td>
+            <td>{{ r.type|title }}</td>
+            <td class="text-end">{{ r.amount|floatformat:0|intcomma }}</td>
+            <td class="text-end">{{ t.total_borrowed_from_us|floatformat:0|intcomma }}</td>
+            <td class="text-end">{{ t.total_paid_to_us|floatformat:0|intcomma }}</td>
+            <td class="text-end">{% if t.due_to_us > 0 %}{{ t.due_to_us|floatformat:0|intcomma }}{% else %}0{% endif %}</td>
+            <td class="text-end">{% if t.we_owe > 0 %}{{ t.we_owe|floatformat:0|intcomma }}{% else %}0{% endif %}</td>
+            <td>{{ r.created_at|date:"d M Y H:i" }}</td>
+            <td>{{ r.note|default:"" }}</td>
+          </tr>
+          {% endwith %}
+        {% empty %}
+          <tr><td colspan="9" class="text-center text-muted py-4">No repayments yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+  <nav class="mt-3">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?type={{ ftype }}&page={{ page_obj.previous_page_number }}">«</a></li>
+      {% else %}<li class="page-item disabled"><span class="page-link">«</span></li>{% endif %}
+
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+          <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?type={{ ftype }}&page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?type={{ ftype }}&page={{ page_obj.next_page_number }}">»</a></li>
+      {% else %}<li class="page-item disabled"><span class="page-link">»</span></li>{% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+</div>
+{% endblock %}

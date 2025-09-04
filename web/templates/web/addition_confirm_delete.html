@@ -1,0 +1,12 @@
+{% extends "web/base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h3 class="text-danger">Delete Addition</h3>
+  <p>If you delete this record, the stock will be reduced accordingly.</p>
+  <p><strong>{{ addition.product.name }}</strong> (+{{ addition.quantity }})</p>
+  <form method="post">{% csrf_token %}
+    <button class="btn btn-danger">Confirm Delete</button>
+    <a href="{% url 'addition_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

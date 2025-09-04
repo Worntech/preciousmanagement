@@ -24,9 +24,150 @@
 
     <!-- Scrollbar CSS -->
     <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+
+    <style>
+    :root{
+  --honey-50: #fff8e6;
+  --honey-100:#fdecc2;
+  --honey-300:#fbcf77;
+  --honey-400:#fbbf24;
+  --honey-500:#f59e0b;
+  --honey-700:#b45309;
+  --ink:#111;
+}
+
+/* Fullscreen overlay */
+.logo-loader{
+  position: fixed; inset: 0; z-index: 9999;
+  display: grid; place-items: center;
+  background: radial-gradient(1200px 1200px at 50% 30%,
+              var(--honey-50) 0%, #fff2d6 40%, #ffe9be 70%, #ffe3a6 100%);
+  transition: opacity .6s ease, visibility .6s ease;
+}
+.logo-loader--hide{ opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* Center stack */
+.logo-wrap{ display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+/* Framed logo so we can add the “shine” sweep on :after */
+.logo-frame{
+  position: relative;
+  width: min(68vw, 320px);
+  aspect-ratio: 1/1;
+  display: grid; place-items: center;
+  filter:
+    drop-shadow(0 12px 24px rgba(180,83,9,.18))
+    drop-shadow(0 6px 12px rgba(245,158,11,.22));
+  /* enter animation (fly in + slight scale) */
+  animation: flyIn .7s cubic-bezier(.2,.8,.2,1) both;
+}
+
+/* Actual image */
+.logo-img{
+  width: 100%; height: auto;
+  /* sequential animations:
+     1) buzz (wiggle) starts after flyIn
+     2) glow pulse runs once
+  */
+  animation:
+    buzz 1.2s ease-in-out 0.7s 2,
+    glow 1.4s ease-in-out 0.7s 1;
+  will-change: transform, filter;
+}
+
+/* Shiny sweep across the logo */
+.logo-frame::after{
+  content:"";
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(120deg,
+      transparent 0%,
+      rgba(255,255,255,.85) 45%,
+      rgba(255,255,255,.55) 50%,
+      transparent 60%);
+  transform: translateX(-120%) skewX(-18deg);
+  mix-blend-mode: screen;
+  filter: blur(1px);
+  animation: shine 1.2s ease 1.1s 1 both;
+}
+
+/* Loading hint */
+.hint{
+  font: 600 12px/1.2 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans";
+  letter-spacing: .28em; text-transform: uppercase;
+  color: #6b4b1f; opacity: .75;
+  animation: breath 1.8s ease-in-out infinite;
+}
+
+/* Keyframes */
+@keyframes flyIn{
+  from{ opacity: 0; transform: translateY(16px) scale(.96); }
+  to  { opacity: 1; transform: translateY(0)    scale(1); }
+}
+@keyframes buzz{
+  0%,100%{ transform: rotate(0deg) translateX(0); }
+  20%{ transform: rotate(-6deg) translateX(-2px); }
+  40%{ transform: rotate(6deg)  translateX(2px); }
+  60%{ transform: rotate(-4deg) translateX(-1px); }
+  80%{ transform: rotate(4deg)  translateX(1px); }
+}
+@keyframes glow{
+  0%  { filter: drop-shadow(0 0 0 rgba(251,191,36,0)); }
+  50% { filter: drop-shadow(0 0 24px rgba(251,191,36,.55)); }
+  100%{ filter: drop-shadow(0 0 0 rgba(251,191,36,0)); }
+}
+@keyframes shine{
+  to{ transform: translateX(120%) skewX(-18deg); }
+}
+@keyframes breath{
+  0%,100%{ opacity: .35; }
+  50%{ opacity: .9; }
+}
+
+/* Accessibility: reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce){
+  .logo-frame, .logo-img, .logo-frame::after, .hint{
+    animation: none !important;
+  }
+}
+
+  </style>
+
+
   </head>
 
   <body>
+
+    <!-- ======== PRECIOUS HONEY LOGO LOADER ======== -->
+<div class="logo-loader" id="logoLoader" aria-label="Loading Precious Honey">
+  <div class="logo-wrap">
+    <div class="logo-frame">
+      <img
+        src="{% static 'web/images/logo6.jpg' %}"
+        alt="Precious Honey — Get the best for good health"
+        class="logo-img"
+        width="260"
+        height="260"
+      />
+    </div>
+    <div class="hint">Loading…</div>
+  </div>
+</div>
+
+<!-- Hide loader when page is ready -->
+<script>
+  // If you have your own app-ready event, call `hideLoader()` there instead.
+  function hideLoader() {
+    const el = document.getElementById('logoLoader');
+    if (el) el.classList.add('logo-loader--hide');
+  }
+  // Default: on full load
+  window.addEventListener('load', () => {
+    // Tiny delay for a smoother finish
+    setTimeout(hideLoader, 300);
+  });
+</script>
+  <!-- Loading ends -->
 
     <!-- Page wrapper starts -->
     <div class="page-wrapper">
@@ -69,8 +210,8 @@
           <!-- Header actions starts -->
           <div class="d-lg-flex d-none gap-2">
 
-            <!-- Notifications dropdown starts -->
-            {% comment %} <div class="dropdown">
+            {% comment %} <!-- Notifications dropdown starts -->
+            <div class="dropdown">
               <a class="dropdown-toggle header-icon" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="ri-list-check-3"></i>
                 <span class="count-label warning"></span>
@@ -309,7 +450,7 @@
           <!-- Header user settings starts -->
           <div class="dropdown ms-2">
             <a id="userSettings" class="dropdown-toggle d-flex align-items-center" href="#!" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <div class="avatar-box">JB<span class="status busy"></span></div>
+              <div class="avatar-box">{{ initials }}<span class="status busy"></span></div>
             </a>
             <div class="dropdown-menu dropdown-menu-end shadow-lg">
               <div class="px-3 py-2">
@@ -357,33 +498,142 @@
             <ul class="sidebar-menu">
               <li class="active current-page">
                 <a href="{% url 'home' %}">
-                  <i class="ri-home-smile-2-line"></i>
+                  <i class="ri-dashboard-line"></i>
                   <span class="menu-text">Dashboard</span>
                 </a>
               </li>
 
-              {% if designation == "Collection Officer" or designation == "CEO" or designation == "Store Keeper" %}
+              {% if designation == "Collection Officer" or designation == "CEO" or designation == "Manager" or designation == "Store Keeper" or designation == "Bee Keeper" %}
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-team-line"></i>
+                  <i class="ri-user-voice-line"></i>
                   <span class="menu-text">Farmers</span>
                 </a>
                 <ul class="treeview-menu">
+                  {% if designation == "Collection Officer" or designation == "CEO" or designation == "Manager" or designation == "Bee Keeper" %}
                   <li>
-                    <a href="patient-dashboard.html">Farmers Dashboard</a>
+                    <a href="{% url 'add_farmers' %}">Add Farmers</a>
                   </li>
+                  {% endif %}
                   <li>
                     <a href="{% url 'allfarmers' %}">All Farmers</a>
                   </li>
-                  {% if designation == "Collection Officer" or designation == "CEO" %}
+                </ul>
+              </li>
+              {% endif %}
+
+              {% if designation == "CEO" or designation == "Manager" or designation == "Vendors" or designation == "Marketing Officer" or designation == "Finance Officer" or designation == "Store Keeper" %}
+              <li class="treeview">
+                <a href="#!">
+                  <i class="ri-user-star-line"></i>
+                  <span class="menu-text">Customers</span>
+                </a>
+                <ul class="treeview-menu">
                   <li>
-                    <a href="{% url 'add_farmers' %}">Add Farmers</a>
+                    <a href="{% url 'customer_list' %}">All Customers</a>
+                  </li>
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Marketing Officer" or designation == "Finance Officer" or designation == "Store Keeper" %}
+                  <li>
+                    <a href="{% url 'customer_create' %}">Add Customers</a>
                   </li>
                   {% endif %}
                 </ul>
               </li>
               {% endif %}
-              {% if designation == "CEO" %}
+
+              {% if designation == "CEO" or designation == "Manager" or designation == "Finance Officer" or designation == "Marketing Officer" or designation == "Store Keeper" %}
+              <li class="treeview">
+                <a href="#!">
+                  <i class="ri-shopping-cart-2-line"></i>
+                  <span class="menu-text">Sales & Order</span>
+                </a>
+                <ul class="treeview-menu">
+                  <li>
+                    <a href="{% url 'order_list' %}">All Order</a>
+                  </li>
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Marketing Officer" or designation == "Store Keeper" %}
+                  <li>
+                    <a href="{% url 'customer_search' %}">Create Order</a>
+                  </li>
+                  {% endif %}
+                  <li>
+                    <a href="{% url 'sales_report_overall_default' %}">Overall Order Report</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'sales_customer_search' %}">Customer Order Report</a>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+
+
+              {% if designation == "CEO" or designation == "Manager" or designation == "Store Keeper" or designation == "Factory Manager" %}
+              <li class="treeview">
+                <a href="#!">
+                  <i class="ri-tools-line"></i>
+                  <span class="menu-text">Material for Use</span>
+                </a>
+                <ul class="treeview-menu">
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Store Keeper" %}
+                  <li>
+                    <a href="{% url 'material_create' %}">Add Material</a>
+                  </li>
+                  {% endif %}
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Store Keeper" or designation == "Factory Manager" %}
+                  <li>
+                    <a href="{% url 'material_list' %}">All Material</a>
+                  </li>
+                  {% endif %}
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Store Keeper" or designation == "Factory Manager" %}
+                  <li>
+                    <a href="{% url 'receipt_list' %}">Material Receipt</a>
+                  </li>
+                  {% endif %}
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Store Keeper" or designation == "Factory Manager" %}
+                  <li>
+                    <a href="{% url 'requisition_list' %}">Material Requisition</a>
+                  </li>
+                  {% endif %}
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Factory Manager" %}
+                  <li>
+                    <a href="{% url 'requisition_create' %}">Create Requisition</a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </li>
+              {% endif %}
+
+
+              {% if designation == "CEO" or designation == "Manager" %}
+              <li class="treeview">
+                <a href="#!">
+                  <i class="ri-exchange-dollar-line"></i>
+                  <span class="menu-text">Loan</span>
+                </a>
+                <ul class="treeview-menu">
+                  <li>
+                    <a href="{% url 'party_list' %}">Parties</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'party_create' %}">Create Parties</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'loan_list' %}">Loan List</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'loan_create' %}">Create Loan</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'repayment_list' %}">Repayment List</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'repayment_create' %}">Repayment</a>
+                  </li>
+                </ul>
+              </li>
+              {% endif %}
+
+              {% if designation == "CEO" or designation == "Manager" %}
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-group-line"></i>
@@ -399,10 +649,11 @@
                 </ul>
               </li>
               {% endif %}
-              {% if designation == "CEO" or designation == "Marketing Officer" %}
+
+              {% if designation == "CEO" or designation == "Marketing Officer" or designation == "Manager" %}
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-group-line"></i>
+                  <i class="ri-store-2-line"></i>
                   <span class="menu-text">Vendors</span>
                 </a>
                 <ul class="treeview-menu">
@@ -415,10 +666,11 @@
                 </ul>
               </li>
               {% endif %}
-              {% if designation == "CEO" or designation == "Store Keeper" %}
+
+              {% if designation == "CEO" or designation == "Manager" or designation == "Store Keeper" %}
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-file-copy-2-fill"></i>
+                  <i class="ri-building-2-line"></i>
                   <span class="menu-text">Asset</span>
                 </a>
                 <ul class="treeview-menu">
@@ -426,39 +678,44 @@
                     <a href="{% url 'allasset' %}">All Asset</a>
                   </li>
                   <li>
-                    <a href="{% url 'assethistory' %}">Asset History</a>
+                    <a href="{% url 'removed_asset' %}">Removed Asset</a>
                   </li>
                   <li>
                     <a href="{% url 'add_asset' %}">Add Asset</a>
                   </li>
+                  <li>
+                    <a href="{% url 'remove_asset' %}">Reduct Asset</a>
+                  </li>
                 </ul>
               </li>
+              {% if designation == "CEO" or designation == "Manager" or designation == "Store Keeper" %}
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-qr-code-line"></i>
-                  <span class="menu-text">QR Code</span>
+                  <i class="ri-price-tag-3-line"></i>
+                  <span class="menu-text">Labels</span>
                 </a>
                 <ul class="treeview-menu">
                   <li>
-                    <a href="{% url 'request_qr_code' %}">Create QR Code</a>
+                    <a href="{% url 'request_qr_code' %}">Create Labels</a>
                   </li>
                   <li>
-                    <a href="{% url 'view_qr_codes' %}">QR Code List</a>
+                    <a href="{% url 'view_qr_codes' %}">Labels List</a>
                   </li>
                 </ul>
               </li>
               {% endif %}
+              {% endif %}
 
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-creative-commons-nc-line"></i>
+                  <i class="ri-hand-coin-line"></i>
                   <span class="menu-text">Money Request</span>
                 </a>
                 <ul class="treeview-menu">
                   <li>
                     <a href="{% url 'moneyrequest' %}">Request Money</a>
                   </li>
-                  {% if designation == "CEO" or designation == "Finance Officer" %}
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Finance Officer" %}
                   <li>
                     <a href="{% url 'requestedmoney' %}">Requested Money</a>
                   </li>
@@ -477,83 +734,49 @@
                   </li>
                 </ul>
               </li>
-              {% if designation == "CEO" or designation == "Collection Officer" or designation == "Store Keeper" %}
+
+              {% if designation == "CEO" or designation == "Manager" or designation == "Marketing Officer" or designation == "Finance Officer" %}
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-briefcase-3-fill"></i>
-                  <span class="menu-text">Buy Product</span>
+                  <i class="ri-shopping-cart-2-line"></i>
+                  <span class="menu-text">Product Purchase</span>
                 </a>
                 <ul class="treeview-menu">
-                  {% if designation == "CEO" or designation == "Collection Officer" %}
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Marketing Officer" or designation == "Finance Officer" %}
                   <li>
-                    <a href="{% url 'add_product' %}">Add Buying Product</a>
-                  </li>
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'comb_honey' %}">Comb Honey</a>
+                    <a href="{% url 'purchase_search' %}">Purchase & Info</a>
                   </li>
                   <li>
-                    <a href="{% url 'honey' %}">Honey</a>
+                    <a href="{% url 'purchase_report_overall_default' %}">General Purchase Report</a>
                   </li>
                   <li>
-                    <a href="{% url 'wax' %}">Wax</a>
-                  </li>
-                </ul>
-              </li>
-              {% endif %}
-              {% if designation == "CEO" or designation == "Factory Manager" or designation == "Store Keeper" %}
-              <li class="treeview">
-                <a href="#!">
-                  <i class="ri-profile-fill"></i>
-                  <span class="menu-text">Product/Material</span>
-                </a>
-                <ul class="treeview-menu">
-                  {% if designation == "CEO" or designation == "Factory Manager" or designation == "Store Keeper" %}
-                  {% if designation == "CEO" or designation == "Factory Manager" %}
-                  <li>
-                    <a href="{% url 'addproduct' %}">Add Produced Product</a>
-                  </li>
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'allproduct' %}">Product Produced</a>
-                  </li>
-                  {% if designation == "CEO" or designation == "Factory Manager" %}
-                  <li>
-                    <a href="{% url 'addmaterial' %}">Request Material</a>
-                  </li>
-                  {% endif %}
-                  <li>
-                    <a href="{% url 'allmaterial' %}">All Requested Material</a>
+                    <a href="{% url 'purchase_farmer_search' %}">Farmers Purchase Report</a>
                   </li>
                   {% endif %}
                 </ul>
               </li>
               {% endif %}
 
-
-
-              {% if designation == "CEO" or designation == "Store Keeper" %}
+              {% if designation == "CEO" or designation == "Marketing Officer" or designation == "Manager" or designation == "Factory Manager" or designation == "Store Keeper" %}
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-database-fill"></i>
+                  <i class="ri-box-3-line"></i>
                   <span class="menu-text">Stock Product</span>
                 </a>
                 <ul class="treeview-menu">
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Marketing Officer" or designation == "Factory Manager" or designation == "Store Keeper" %}
+                  {% if designation == "CEO" or designation == "Manager" or designation == "Factory Manager" or designation == "Store Keeper" %}
                   <li>
-                    <a href="{% url 'productin' %}">Add Stock Product</a>
+                    <a href="{% url 'addition_create' %}">Add Product</a>
                   </li>
                   <li>
-                    <a href="{% url 'productout' %}">Sell Stock Product</a>
+                    <a href="{% url 'addition_list' %}">Product Added</a>
                   </li>
+                  {% endif %}
                   <li>
-                    <a href="{% url 'allstock' %}">Stock Statics</a>
+                    <a href="{% url 'product_list' %}">Product Statics</a>
                   </li>
-                  <li>
-                    <a href="{% url 'stockadded' %}">Stock added</a>
-                  </li>
-                  <li>
-                    <a href="{% url 'stockremoved' %}">Stock sold</a>
-                  </li>
+                  {% endif %}
                 </ul>
               </li>
               {% endif %}
@@ -561,10 +784,10 @@
 
 
               
-              {% if designation == "CEO" or designation == "Finance Officer" %}
+              {% if designation == "CEO" or designation == "Manager" or designation == "Finance Officer" %}
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-hand-coin-line"></i>
+                  <i class="ri-money-dollar-circle-line"></i>
                   <span class="menu-text">Salary</span>
                 </a>
                 <ul class="treeview-menu">
@@ -577,7 +800,8 @@
                 </ul>
               </li>
               {% endif %}
-              {% if designation == "CEO" or designation == "Finance Officer" %}
+
+              {% if designation == "CEO" or designation == "Manager" or designation == "Finance Officer" %}
               <li class="treeview">
                 <a href="#!">
                   <i class="ri-money-dollar-circle-line"></i>
@@ -602,7 +826,7 @@
 
               <li class="treeview">
                 <a href="#!">
-                  <i class="ri-admin-line"></i>
+                  <i class="ri-shield-keyhole-line"></i>
                   <span class="menu-text">Auth</span>
                 </a>
                 <ul class="treeview-menu">
@@ -615,20 +839,6 @@
                 </ul>
               </li>
 
-              {% comment %} <li>
-                <a href="#!">
-                  <i class="ri-notification-line"></i>
-                  <span class="menu-text">Notifications</span>
-                  <span class="badge bg-primary ms-auto">6</span>
-                </a>
-              </li> {% endcomment %}
-              {% comment %} <li>
-                <a href="#!">
-                  <i class="ri-ticket-line"></i>
-                  <span class="menu-text">Badge</span>
-                  <span class="badge border border-primary text-primary ms-auto">Chip</span>
-                </a>
-              </li> {% endcomment %}
               <li>
                 <a href="#!" class="disabled">
                   <i class="ri-magic-line"></i>
@@ -659,8 +869,8 @@
 
           <!-- App footer starts -->
           <div class="app-footer bg-white">
-            <span>© Precious Honey 2025</span>
-          </div>
+            <span>© Precious Honey {% now "Y" %}</span>
+        </div>
           <!-- App footer ends -->
 
         </div>

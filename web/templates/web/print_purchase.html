@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Purchase Receipt #{{ purchase.id }}</title>
+  {% load static %}
+  {% load humanize %}
+
+  <!-- Standalone CSS (Bootstrap-like utilities, print-friendly) -->
+  <style>
+    :root{
+      --text:#1f2937;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --accent:#111827;
+      --soft:#f8fafc;
+      --card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;color:var(--text);font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,"Noto Sans",sans-serif}
+    .container{max-width:980px;margin:24px auto;padding:0 16px}
+    .row{display:flex;flex-wrap:wrap;gap:16px}
+    .col{flex:1 1 0}
+    .col-6{flex:0 0 calc(50% - 8px)}
+    .text-end{text-align:right}
+    .text-center{text-align:center}
+    .text-muted{color:var(--muted)}
+    .fw-semibold{font-weight:600}
+    .fw-bold{font-weight:700}
+    .small{font-size:12px}
+    .mb-0{margin-bottom:0}
+    .mb-1{margin-bottom:4px}
+    .mb-2{margin-bottom:8px}
+    .mb-3{margin-bottom:12px}
+    .mb-4{margin-bottom:16px}
+    .mt-2{margin-top:8px}
+    .mt-3{margin-top:12px}
+    .mt-4{margin-top:16px}
+    .gap-2{gap:8px}
+    .gap-3{gap:12px}
+    .border-bottom{border-bottom:1px solid var(--border)}
+    .d-flex{display:flex;align-items:center}
+    .align-start{align-items:flex-start}
+    .justify-between{justify-content:space-between}
+    .wrap{flex-wrap:wrap}
+
+    /* Card */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:10px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+    .card-body{padding:12px}
+
+    /* Headings */
+    h1,h2,h3,h4,h5{margin:0 0 6px 0;line-height:1.25}
+    h4{font-size:20px}
+    h5{font-size:16px}
+
+    /* Table */
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:var(--soft);color:var(--accent);font-weight:600;border-bottom:1px solid var(--border)}
+    th,td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top}
+    tfoot th, tfoot td{background:var(--soft);font-weight:700}
+
+    /* Badges / chips */
+    .chip{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;font-size:12px;white-space:nowrap}
+
+    /* Buttons (for on-screen actions only) */
+    .actions{margin-top:16px;display:flex;gap:8px;justify-content:center}
+    .btn{appearance:none;border:1px solid var(--border);background:#fff;border-radius:8px;padding:8px 14px;cursor:pointer}
+    .btn.primary{background:#111827;color:#fff;border-color:#111827}
+    .btn:hover{filter:brightness(0.98)}
+
+    /* Header block */
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:70px;width:auto;object-fit:contain}
+    .seller{text-align:right}
+
+    /* Print */
+    @media print{
+      .actions{display:none!important}
+      body{margin:0}
+      .container{margin:0 auto;max-width:900px}
+      .card{box-shadow:none}
+      a[href]:after{content:""}
+    }
+
+    /* Narrow screens */
+    @media (max-width:700px){
+      .seller{text-align:left;margin-top:8px}
+      .col-6{flex:1 1 100%}
+      .text-end{ text-align:left }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header: Logo + Seller Info -->
+    <div class="d-flex align-start justify-between wrap border-bottom mb-3" style="padding-bottom:12px;">
+      <div class="brand">
+        <img src="{% static 'web/images/logo6.jpg' %}" alt="Company Logo">
+        <div>
+          <h4 class="mb-0">Precious Honey Services</h4>
+          <div>P.O. Box 4125, Njombe</div>
+        <div>Joshoni street, House No. 33</div>
+        <div>Songea of road, Mji mwema ward</div>
+        <div>+255 7699 400 959</div>
+        <div>info@precioushoney.co.tz</div>
+        <div>www.precioushoney.co.tz</div>
+        </div>
+      </div>
+
+      <div class="seller small">
+        <div class="fw-semibold">Seller (Farmer)</div>
+        <div class="fw-semibold">{{ purchase.farmer.first_name }} {{ purchase.farmer.last_name }}</div>
+              {% if purchase.farmer.phone %}<div>Phone: {{ purchase.farmer.phone }}</div>{% endif %}
+              {% if purchase.farmer.village %}<div>Village: {{ purchase.farmer.village }}</div>{% endif %}
+              {% if purchase.farmer.ward %}<div>Ward: {{ purchase.farmer.ward }}</div>{% endif %}
+              {% if purchase.farmer.district %}<div>District: {{ purchase.farmer.district }}</div>{% endif %}
+              {% if purchase.farmer.region %}<div>Region: {{ purchase.farmer.region }}</div>{% endif %}
+              {% if purchase.farmer.national_id %}<div>National ID: {{ purchase.farmer.national_id }}</div>{% endif %}
+      </div>
+    </div>
+
+    <!-- Title + Meta -->
+    <div class="d-flex justify-between wrap gap-2 mb-2">
+      <div>
+        <h5 class="mb-0">Purchase Receipt</h5>
+        <div class="text-muted small">Official receipt</div>
+      </div>
+      <div class="text-end small">
+        <div><span class="text-muted">Purchase #</span> <span class="fw-semibold">{{ purchase.id }}</span></div>
+        <div><span class="text-muted">Date:</span> {{ purchase.purchase_date|date:"d M Y H:i" }}</div>
+        <div><span class="text-muted">Printed:</span> {% now "d M Y H:i" %}</div>
+      </div>
+    </div>
+
+    <!-- Buyer + Summary -->
+    <div class="row">
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="fw-semibold mb-1">Buyer</div>
+            <div class="small">
+              <div>P.O. Box 4125, Njombe</div>
+              <div>Joshoni street, House No. 33</div>
+              <div>Songea of road, Mji mwema ward</div>
+              <div>+255 7699 400 959</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="fw-semibold mb-1">Summary</div>
+            <div class="d-flex justify-between"><span class="text-muted small">Status:</span><span class="chip">{{ purchase.status|default:"pending" }}</span></div>
+            <div class="d-flex justify-between"><span class="text-muted small">Created By:</span><span class="fw-semibold small">{{ purchase.created_by|default:"—" }}</span></div>
+            <div class="d-flex justify-between"><span class="text-muted small">Items:</span><span class="fw-semibold small">{{ purchase.items.count }}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <div class="card mt-3">
+      <div class="card-body" style="padding:0;">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th class="text-center" style="width:110px;">Quantity</th>
+                <th class="text-end" style="width:140px;">Unit Price (TZS)</th>
+                <th class="text-end" style="width:160px;">Total (TZS)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in purchase.items.all %}
+                <tr>
+                  <td>
+                    <div class="fw-semibold">{{ item.product_name }}</div>
+                    {% if item.barcode_data %}
+                      <div class="text-muted small">Barcode: {{ item.barcode_data }}</div>
+                    {% endif %}
+                  </td>
+                  <td class="text-center">{{ item.quantity|floatformat:0|intcomma }}</td>
+                  <td class="text-end">{{ item.unit_price|floatformat:0|intcomma }}</td>
+                  <td class="text-end">{{ item.total_price|floatformat:0|intcomma }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center text-muted">No items</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3" class="text-end">Grand Total</th>
+                <th class="text-end">{{ purchase.total_amount|default:0|floatformat:0|intcomma }}</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center mt-3">
+      <div>Thank you for your business.</div>
+      <div class="text-muted small">This receipt is computer generated and valid without signature.</div>
+    </div>
+
+    <!-- Actions (screen only) -->
+    <div class="actions">
+      <button class="btn" onclick="history.back()">← Back</button>
+      <button class="btn primary" onclick="window.print()">Print Receipt</button>
+    </div>
+  </div>
+</body>
+</html>

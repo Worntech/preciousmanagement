@@ -29,7 +29,7 @@
     --bs-gray-700: #4c545e;
     --bs-gray-800: #31373d;
     --bs-gray-900: #21252a;
-    --bs-primary: #116aef;
+    --bs-primary: rgb(180, 83, 9);
     --bs-secondary: #d8e2eb;
     --bs-danger: #ff5a39;
     --bs-success: #0ebb13;
@@ -93,7 +93,7 @@
     --bs-tertiary-bg: #f0f1f4;
     --bs-tertiary-bg-rgb: 240, 241, 244;
     --bs-heading-color: inherit;
-    --bs-link-color: #116aef;
+    --bs-link-color: rgb(180, 83, 9);
     --bs-link-color-rgb: 17, 106, 239;
     --bs-link-decoration: underline;
     --bs-link-hover-color: #0e55bf;
@@ -2936,8 +2936,8 @@ textarea.form-control-lg {
 }
 
 .form-check-input:checked {
-    background-color: #116aef;
-    border-color: #116aef
+    background-color: rgb(180, 83, 9);
+    border-color: rgb(180, 83, 9)
 }
 
 .form-check-input:checked[type=checkbox] {
@@ -2949,8 +2949,8 @@ textarea.form-control-lg {
 }
 
 .form-check-input[type=checkbox]:indeterminate {
-    background-color: #116aef;
-    border-color: #116aef;
+    background-color: rgb(180, 83, 9);
+    border-color: rgb(180, 83, 9);
     --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e")
 }
 
@@ -3056,7 +3056,7 @@ textarea.form-control-lg {
     height: 1rem;
     margin-top: -0.25rem;
     appearance: none;
-    background-color: #116aef;
+    background-color: rgb(180, 83, 9);
     border: 0;
     border-radius: 1rem;
     transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
@@ -3086,7 +3086,7 @@ textarea.form-control-lg {
     width: 1rem;
     height: 1rem;
     appearance: none;
-    background-color: #116aef;
+    background-color: rgb(180, 83, 9);
     border: 0;
     border-radius: 1rem;
     transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
@@ -3646,8 +3646,8 @@ fieldset:disabled .btn {
 
 .btn-primary {
     --bs-btn-color: #ffffff;
-    --bs-btn-bg: #116aef;
-    --bs-btn-border-color: #116aef;
+    --bs-btn-bg: rgb(180, 83, 9);
+    --bs-btn-border-color: rgb(180, 83, 9);
     --bs-btn-hover-color: #ffffff;
     --bs-btn-hover-bg: #0e5acb;
     --bs-btn-hover-border-color: #0e55bf;
@@ -3657,8 +3657,8 @@ fieldset:disabled .btn {
     --bs-btn-active-border-color: #0d50b3;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(15, 17, 21, 0.125);
     --bs-btn-disabled-color: #ffffff;
-    --bs-btn-disabled-bg: #116aef;
-    --bs-btn-disabled-border-color: #116aef
+    --bs-btn-disabled-bg: rgb(180, 83, 9);
+    --bs-btn-disabled-border-color: rgb(180, 83, 9)
 }
 
 .btn-secondary {
@@ -3781,19 +3781,19 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-primary {
-    --bs-btn-color: #116aef;
-    --bs-btn-border-color: #116aef;
+    --bs-btn-color: rgb(180, 83, 9);
+    --bs-btn-border-color: rgb(180, 83, 9);
     --bs-btn-hover-color: #ffffff;
-    --bs-btn-hover-bg: #116aef;
-    --bs-btn-hover-border-color: #116aef;
+    --bs-btn-hover-bg: rgb(180, 83, 9);
+    --bs-btn-hover-border-color: rgb(180, 83, 9);
     --bs-btn-focus-shadow-rgb: 17, 106, 239;
     --bs-btn-active-color: #ffffff;
-    --bs-btn-active-bg: #116aef;
-    --bs-btn-active-border-color: #116aef;
+    --bs-btn-active-bg: rgb(180, 83, 9);
+    --bs-btn-active-border-color: rgb(180, 83, 9);
     --bs-btn-active-shadow: inset 0 3px 5px rgba(15, 17, 21, 0.125);
-    --bs-btn-disabled-color: #116aef;
+    --bs-btn-disabled-color: rgb(180, 83, 9);
     --bs-btn-disabled-bg: transparent;
-    --bs-btn-disabled-border-color: #116aef;
+    --bs-btn-disabled-border-color: rgb(180, 83, 9);
     --bs-gradient: none
 }
 
@@ -4546,7 +4546,7 @@ fieldset:disabled .btn {
 .nav-pills {
     --bs-nav-pills-border-radius: var(--bs-border-radius);
     --bs-nav-pills-link-active-color: #ffffff;
-    --bs-nav-pills-link-active-bg: #116aef
+    --bs-nav-pills-link-active-bg: rgb(180, 83, 9)
 }
 
 .nav-pills .nav-link {
@@ -5464,8 +5464,8 @@ fieldset:disabled .btn {
     --bs-pagination-focus-bg: var(--bs-secondary-bg);
     --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(17, 106, 239, 0.25);
     --bs-pagination-active-color: #ffffff;
-    --bs-pagination-active-bg: #116aef;
-    --bs-pagination-active-border-color: #116aef;
+    --bs-pagination-active-bg: rgb(180, 83, 9);
+    --bs-pagination-active-border-color: rgb(180, 83, 9);
     --bs-pagination-disabled-color: var(--bs-secondary-color);
     --bs-pagination-disabled-bg: var(--bs-secondary-bg);
     --bs-pagination-disabled-border-color: var(--bs-border-color);
@@ -5689,7 +5689,7 @@ fieldset:disabled .btn {
     --bs-progress-border-radius: var(--bs-border-radius);
     --bs-progress-box-shadow: var(--bs-box-shadow-inset);
     --bs-progress-bar-color: #ffffff;
-    --bs-progress-bar-bg: #116aef;
+    --bs-progress-bar-bg: rgb(180, 83, 9);
     --bs-progress-bar-transition: width 0.6s ease;
     display: flex;
     height: var(--bs-progress-height);
@@ -5756,8 +5756,8 @@ fieldset:disabled .btn {
     --bs-list-group-disabled-color: var(--bs-secondary-color);
     --bs-list-group-disabled-bg: var(--bs-body-bg);
     --bs-list-group-active-color: #ffffff;
-    --bs-list-group-active-bg: #116aef;
-    --bs-list-group-active-border-color: #116aef;
+    --bs-list-group-active-bg: rgb(180, 83, 9);
+    --bs-list-group-active-border-color: rgb(180, 83, 9);
     display: flex;
     flex-direction: column;
     padding-left: 0;
@@ -13752,8 +13752,8 @@ a:hover {
 }
 
 .btn-white:hover {
-    border: 1px solid #116aef;
-    color: #116aef
+    border: 1px solid rgb(180, 83, 9);
+    color: rgb(180, 83, 9)
 }
 
 .btn-black {
@@ -13997,8 +13997,8 @@ a:hover {
 }
 
 .form-check .form-check-input:checked {
-    background-color: #116aef;
-    border-color: #116aef
+    background-color: rgb(180, 83, 9);
+    border-color: rgb(180, 83, 9)
 }
 
 .form-check .form-check-input:disabled~.form-check-label,
@@ -14083,8 +14083,8 @@ input[type=file]::file-selector-button {
 }
 
 .custom-tabs-container .nav-tabs .nav-link.active {
-    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #116aef;
-    color: #116aef;
+    border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgb(180, 83, 9);
+    color: rgb(180, 83, 9);
     background: rgba(0, 0, 0, 0);
     border-bottom-width: 3px
 }
@@ -14236,7 +14236,7 @@ input[type=file]::file-selector-button {
 .breadcrumb .breadcrumb-item i {
     font-size: 1.5rem;
     margin-right: .75rem;
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .breadcrumb .breadcrumb-item+.breadcrumb-item::before {
@@ -14248,7 +14248,7 @@ input[type=file]::file-selector-button {
 }
 
 .breadcrumb .breadcrumb-active {
-    color: #116aef;
+    color: rgb(180, 83, 9);
     font-weight: 500
 }
 
@@ -14590,7 +14590,7 @@ input[type=file]::file-selector-button {
 
 .toggle-sidebar i,
 .pin-sidebar i {
-    color: #116aef;
+    color: rgb(180, 83, 9);
     font-size: 1rem
 }
 
@@ -14670,12 +14670,12 @@ input[type=file]::file-selector-button {
 .sidebar-menu>li:hover>a {
     color: #000;
     background: #e9f2ff;
-    border-left-color: #116aef
+    border-left-color: rgb(180, 83, 9)
 }
 
 .sidebar-menu>li:hover>a i {
     background: #fff;
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .sidebar-menu>li>.treeview-menu {
@@ -14684,7 +14684,7 @@ input[type=file]::file-selector-button {
 
 .sidebar-menu>li .menu-title {
     padding: 8px 25px 8px 18px;
-    color: #116aef;
+    color: rgb(180, 83, 9);
     font-size: .875rem;
     border-top: 1px solid #f1f1f1
 }
@@ -14701,7 +14701,7 @@ input[type=file]::file-selector-button {
 
 .sidebar-menu>li.active>a i {
     background: #fff;
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .sidebar-menu li.active>.treeview-menu {
@@ -14709,15 +14709,15 @@ input[type=file]::file-selector-button {
 }
 
 .sidebar-menu>li.current-page>a {
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .sidebar-menu>li.current-page>a:hover {
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .sidebar-menu>li.current-page>a i {
-    background-color: #116aef;
+    background-color: rgb(180, 83, 9);
     color: #fff
 }
 
@@ -14751,16 +14751,16 @@ input[type=file]::file-selector-button {
 }
 
 .sidebar-menu .treeview-menu>li>a:hover {
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .sidebar-menu .treeview-menu>li>a.active-sub {
     position: relative;
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .sidebar-menu .treeview-menu>li>a.active-sub:hover {
-    color: #116aef
+    color: rgb(180, 83, 9)
 }
 
 .sidebar-menu .treeview-menu>li.active>a .ri-arrow-right-s-line {
@@ -14774,7 +14774,7 @@ input[type=file]::file-selector-button {
 .app-header {
     padding: 0 1.25rem;
     min-height: 50px;
-    background: #116aef;
+    background: rgb(180, 83, 9);
     position: sticky;
     top: 0;
     z-index: 100
@@ -14851,7 +14851,7 @@ input[type=file]::file-selector-button {
     left: 10px;
     top: 7px;
     line-height: 1;
-    color: #116aef;
+    color: rgb(180, 83, 9);
     font-size: 1.25rem
 }
 
@@ -14859,8 +14859,8 @@ input[type=file]::file-selector-button {
     width: 38px;
     height: 38px;
     color: #fff;
-    background: #116aef;
-    border: 3px solid #116aef;
+    background: rgb(180, 83, 9);
+    border: 3px solid rgb(180, 83, 9);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14913,7 +14913,7 @@ input[type=file]::file-selector-button {
     font-size: .725rem;
     margin: .6rem 1.5rem;
     padding: .4rem 1rem;
-    color: #116aef;
+    color: rgb(180, 83, 9);
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px
@@ -14955,7 +14955,7 @@ input[type=file]::file-selector-button {
     top: 1px;
     left: 0;
     background: #fff;
-    border: 4px solid #116aef;
+    border: 4px solid rgb(180, 83, 9);
     width: 17px;
     height: 17px;
     -webkit-border-radius: 50px;
@@ -15041,7 +15041,7 @@ input[type=file]::file-selector-button {
 .activity-feed .feed-item {
     position: relative;
     padding: 0 0 40px 25px;
-    border-left: 2px solid #116aef
+    border-left: 2px solid rgb(180, 83, 9)
 }
 
 .activity-feed .feed-item:after {
@@ -15245,8 +15245,8 @@ input[type=file]::file-selector-button {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    border: 1px dashed #116aef;
-    color: #116aef
+    border: 1px dashed rgb(180, 83, 9);
+    color: rgb(180, 83, 9)
 }
 
 .gallery {

@@ -1,0 +1,177 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="d-flex align-items-center gap-2 mb-3">
+  <h4 class="mb-0">Purchase Report ({{ period|title }})</h4>
+  {% if is_farmer and farmer %}
+    <span class="badge bg-primary rounded-pill">Farmer: {{ farmer.first_name }} {{ farmer.last_name }}</span>
+    <div class="ms-auto">
+      <a class="btn btn-outline-secondary btn-sm" href="{% url 'purchase_farmer_search' %}">
+        ← Search another farmer
+      </a>
+    </div>
+  {% endif %}
+</div>
+
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    {# Period switch buttons #}
+    {% with base_overall_url="purchase_report_overall" base_farmer_url="purchase_report_farmer" %}
+      {% if is_farmer and farmer %}
+        <a href="{% url 'purchase_report_farmer' farmer.id 'day' %}"     class="btn btn-outline-primary {% if period == 'day' %}active{% endif %}">Day</a>
+        <a href="{% url 'purchase_report_farmer' farmer.id 'week' %}"    class="btn btn-outline-primary {% if period == 'week' %}active{% endif %}">Week</a>
+        <a href="{% url 'purchase_report_farmer' farmer.id 'month' %}"   class="btn btn-outline-primary {% if period == 'month' %}active{% endif %}">Month</a>
+        <a href="{% url 'purchase_report_farmer' farmer.id 'quarter' %}" class="btn btn-outline-primary {% if period == 'quarter' %}active{% endif %}">Quarter</a>
+        <a href="{% url 'purchase_report_farmer' farmer.id 'half' %}"    class="btn btn-outline-primary {% if period == 'half' %}active{% endif %}">Half-Year</a>
+        <a href="{% url 'purchase_report_farmer' farmer.id 'year' %}"    class="btn btn-outline-primary {% if period == 'year' %}active{% endif %}">Year</a>
+      {% else %}
+        <a href="{% url 'purchase_report_overall' 'day' %}"     class="btn btn-outline-primary {% if period == 'day' %}active{% endif %}">Day</a>
+        <a href="{% url 'purchase_report_overall' 'week' %}"    class="btn btn-outline-primary {% if period == 'week' %}active{% endif %}">Week</a>
+        <a href="{% url 'purchase_report_overall' 'month' %}"   class="btn btn-outline-primary {% if period == 'month' %}active{% endif %}">Month</a>
+        <a href="{% url 'purchase_report_overall' 'quarter' %}" class="btn btn-outline-primary {% if period == 'quarter' %}active{% endif %}">Quarter</a>
+        <a href="{% url 'purchase_report_overall' 'half' %}"    class="btn btn-outline-primary {% if period == 'half' %}active{% endif %}">Half-Year</a>
+        <a href="{% url 'purchase_report_overall' 'year' %}"    class="btn btn-outline-primary {% if period == 'year' %}active{% endif %}">Year</a>
+      {% endif %}
+    {% endwith %}
+
+    <div class="ms-auto d-flex gap-2">
+      {% if is_farmer and farmer %}
+        <a class="btn btn-light border" href="{% url 'purchase_report_export_csv_farmer' 'farmer' farmer.id period %}">
+          Download CSV
+        </a>
+      {% else %}
+        <a class="btn btn-light border" href="{% url 'purchase_report_export_csv' 'overall' period %}">
+          Download CSV
+        </a>
+      {% endif %}
+      <button class="btn btn-light border" onclick="window.print()">Print</button>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="small text-muted">Grand Total</div>
+          <div id="grandTotal" class="h3 fw-bold">{{ grand_total }}</div>
+          <div class="text-muted small">TZS</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <canvas id="reportChart" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <h6 class="mb-0">Report Table</h6>
+      <span class="text-muted small">Current period: {{ period|title }}</span>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th style="width:60%">Period</th>
+              <th class="text-end">Total (TZS)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if rows %}
+              {% for r in rows %}
+                <tr>
+                  <td>{{ r.label }}</td>
+                  <td class="text-end amount">{{ r.total }}</td>
+                </tr>
+              {% endfor %}
+              <tr class="table-light fw-semibold">
+                <td>GRAND TOTAL:</td>
+                <td class="text-end amount">{{ grand_total }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="2" class="text-center text-muted">No purchases found</td></tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  {# Safe data for Chart.js #}
+  {{ rows|json_script:"rows_json" }}
+
+</div>
+
+{# Chart.js CDN #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  // Data
+  const rows = JSON.parse(document.getElementById("rows_json").textContent || "[]");
+  const labels = rows.map(r => r.label);
+  const values = rows.map(r => Number(r.total || 0));
+
+  // Format helpers (English, Tanzania)
+  const tzsFmt = new Intl.NumberFormat('en-TZ', { style: 'currency', currency: 'TZS', maximumFractionDigits: 0 });
+  const numFmt = new Intl.NumberFormat('en-TZ');
+
+  // Format the card and table numbers
+  const gt = document.getElementById('grandTotal');
+  if (gt) {
+    const raw = Number(gt.innerText || "0");
+    gt.innerText = tzsFmt.format(raw);
+  }
+  document.querySelectorAll('td.amount').forEach(td => {
+    const raw = Number(td.innerText || "0");
+    td.innerText = tzsFmt.format(raw);
+  });
+
+  // Chart
+  const ctx = document.getElementById('reportChart');
+  if (ctx) {
+    new Chart(ctx.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Total (TZS)',
+          data: values,
+          tension: 0.3,
+          fill: true,
+          pointRadius: 3,
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context) => tzsFmt.format(context.parsed.y)
+            }
+          }
+        },
+        scales: {
+          y: {
+            ticks: {
+              callback: (v) => numFmt.format(v)
+            }
+          }
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

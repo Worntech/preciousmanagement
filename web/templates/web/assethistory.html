@@ -1,194 +1,169 @@
 {% extends 'web/base.html' %}
 {% load static %}
+{% load humanize %}
+
 {% block content %}
+<!-- App hero header starts -->
+<div class="app-hero-header d-flex align-items-center">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+      <a href="{% url 'home' %}">Home</a>
+    </li>
+    <li class="breadcrumb-item text-primary" aria-current="page">
+      Added Asset
+    </li>
+  </ol>
 
-<!DOCTYPE html><html lang="en"><head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Precious Honey Asset History</title>
+  <div class="ms-auto d-lg-flex d-none flex-row">
+    <div class="d-flex flex-row gap-1 day-sorting">
+      <button class="btn btn-sm btn-primary">Added Asset</button>
+    </div>
+  </div>
+</div>
+<!-- App hero header ends -->
 
+<!-- App body starts -->
+<div class="app-body">
+  <div class="row gx-3">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h5 class="card-title">{{ category_name }} Assets</h5>
+          <a href="{% url 'add_asset' %}" class="btn btn-primary">Add Asset</a>
+        </div>
 
-    <!-- *************
-		************ CSS Files *************
-	************* -->
-    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
-    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Serial No</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Assigned To</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Condition</th>
+                  <th>Purchase Date</th>
+                  <th>Purchase Cost</th>
+                  <th>Current Value</th>
+                  <th>Depreciation %</th>
+                  <th>Life (yrs)</th>
+                  <th>Warranty Exp.</th>
+                  <th>Last Service</th>
+                  <th>Next Service</th>
+                  <th>Created By</th>
+                  <th>Created</th>
+                  <th>Updated</th>
+                  <th class="text-center" style="width:110px;">Actions</th>
+                </tr>
+              </thead>
 
-    <!-- *************
-		************ Vendor Css Files *************
-	************ -->
+              <tbody>
+                {% for asset in assets %}
+                  <tr>
+                    <td class="fw-semibold">{{ asset.serial_number }}</td>
+                    <td>{{ asset.asset_name }}</td>
+                    <td>{{ asset.category }}</td>
+                    <td>{{ asset.assigned_to|default:"—" }}</td>
+                    <td>{{ asset.location|default:"—" }}</td>
 
-    <!-- Scrollbar CSS -->
-    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
+                    <td>
+                      {% if asset.status == "active" %}
+                        <span class="badge bg-success">Active</span>
+                      {% elif asset.status == "inactive" %}
+                        <span class="badge bg-secondary">Inactive</span>
+                      {% elif asset.status == "maintenance" %}
+                        <span class="badge bg-warning text-dark">Maintenance</span>
+                      {% elif asset.status == "disposed" %}
+                        <span class="badge bg-dark">Disposed</span>
+                      {% else %}
+                        <span class="badge bg-light text-dark">{{ asset.status }}</span>
+                      {% endif %}
+                    </td>
 
-    <!-- Data Tables -->
-    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5.css' %}">
-    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5-custom.css' %}">
-    <link rel="stylesheet" href="{% static 'web/css/dataTables.bs5-custom_1.css' %}">
-  </head>
+                    <td>
+                      {% if asset.condition == "new" %}
+                        <span class="badge bg-success">New</span>
+                      {% elif asset.condition == "good" %}
+                        <span class="badge bg-primary">Good</span>
+                      {% elif asset.condition == "fair" %}
+                        <span class="badge bg-info text-dark">Fair</span>
+                      {% elif asset.condition == "needs_repair" %}
+                        <span class="badge bg-warning text-dark">Needs Repair</span>
+                      {% elif asset.condition == "broken" %}
+                        <span class="badge bg-danger">Broken</span>
+                      {% else %}
+                        <span class="badge bg-light text-dark">{{ asset.condition }}</span>
+                      {% endif %}
+                    </td>
 
-  <body>
+                    <td>{{ asset.purchase_date|date:"Y-m-d"|default:"—" }}</td>
+                    <td>{% if asset.purchase_cost %}{{ asset.purchase_cost|floatformat:0|intcomma }}{% else %}—{% endif %}</td>
+                    <td>{% if asset.current_value %}{{ asset.current_value|floatformat:0|intcomma }}{% else %}—{% endif %}</td>
+                    <td>{% if asset.depreciation_rate is not None %}{{ asset.depreciation_rate|floatformat:2 }}%{% else %}—{% endif %}</td>
+                    <td>{{ asset.expected_life_years|default:"—" }}</td>
+                    <td>{{ asset.warranty_expiry|date:"Y-m-d"|default:"—" }}</td>
+                    <td>{{ asset.last_service_date|date:"Y-m-d"|default:"—" }}</td>
+                    <td>{{ asset.next_service_due|date:"Y-m-d"|default:"—" }}</td>
+                    <td>
+                      {% if asset.created_by %}
+                        {{ asset.created_by.get_full_name|default:asset.created_by.username }}
+                      {% else %}
+                        —
+                      {% endif %}
+                    </td>
+                    <td>{{ asset.date_created|date:"Y-m-d H:i" }}</td>
+                    <td>{{ asset.date_updated|date:"Y-m-d H:i" }}</td>
 
-    <!-- Loading starts -->
-  <div id="loading-wrapper">
-    <div class="spin-wrapper">
-      <div class="spin">
-        <div class="inner"></div>
-      </div>
-      <div class="spin">
-        <div class="inner"></div>
-      </div>
-      <div class="spin">
-        <div class="inner"></div>
-      </div>
-      <div class="spin">
-        <div class="inner"></div>
-      </div>
-      <div class="spin">
-        <div class="inner"></div>
-      </div>
-      <div class="spin">
-        <div class="inner"></div>
+                    <td class="text-center">
+                      <a href="{% url 'updateasset' asset.id %}" class="btn btn-outline-success btn-sm" title="Edit">
+                        <i class="ri-edit-box-line"></i>
+                      </a>
+                      <button class="btn btn-outline-danger btn-sm"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteModal{{ asset.pk }}"
+                              title="Delete">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- Delete Modal -->
+                  <div class="modal fade" id="deleteModal{{ asset.pk }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Confirm Deletion</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to delete asset <b>{{ asset.asset_name }}</b> ({{ asset.serial_number }})?
+                        </div>
+                        <div class="modal-footer">
+                          <form method="POST" action="{% url 'deleteasset' asset.pk %}">
+                            {% csrf_token %}
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% empty %}
+                  <tr>
+                    <td colspan="19" class="text-center">No assets found in {{ category_name }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
-  <!-- Loading ends -->
-
-          <!-- App hero header starts -->
-          <div class="app-hero-header d-flex align-items-center">
-
-            <!-- Breadcrumb starts -->
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-                <a href="{% url 'home' %}">Home</a>
-              </li>
-              <li class="breadcrumb-item text-primary" aria-current="page">
-                Asset History
-              </li>
-            </ol>
-            <!-- Breadcrumb ends -->
-
-            <!-- Sales stats starts -->
-            <div class="ms-auto d-lg-flex d-none flex-row">
-              <div class="d-flex flex-row gap-1 day-sorting">
-                <button class="btn btn-sm btn-primary">Asset History</button>
-              </div>
-            </div>
-            <!-- Sales stats ends -->
-
-          </div>
-          <!-- App Hero header ends -->
-
-          <!-- App body starts -->
-          <div class="app-body">
-
-            <!-- Row starts -->
-            <div class="row gx-3">
-              <div class="col-sm-12">
-                <div class="card">
-                  <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="card-title">Asset History</h5>
-                    <a href="{% url 'add_asset' %}" class="btn btn-primary ms-auto">Add Asset</a>
-                  </div>
-                  <div class="card-body">
-
-                    <!-- Table starts -->
-                    <div class="table-responsive">
-                      <table id="basicExample" class="table truncate m-0 align-middle">
-                        <thead>
-                          <tr>
-                            <th>Asset Name</th>
-                            <th>Quantity</th>
-                            <th>Date Added</th>
-                            <th>Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-
-                            {% for i in assethistory %}
-                          <tr>
-                            <td>
-                              {{i.asset_name}}
-                            </td>
-                            <td>{{i.quantity}}</td>
-                            <td>{{i.date_created}}</td>
-                            <td>
-                              <button 
-                                class="btn btn-outline-danger btn-sm" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#deleteModal{{ i.pk }}">
-                                <i class="ri-delete-bin-line"></i>
-                             </button>
-
-                                <a href="{% url 'updateasset' i.id %}" class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit Asset Details">
-                                  <i class="ri-edit-box-line"></i>
-                                </a>
-                              </div>
-                            </td>
-                          </tr>
-
-                          <!-- Delete Confirmation Modal -->
-                          <div class="modal fade" id="deleteModal{{ i.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ i.pk }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel{{ i.pk }}">Confirm Deletion</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to delete this Asset: {{ i.asset_name }} || Quantity {{ i.quantity }}? <br><br>
-                                        Deleting this {{ i.asset_name }}'s asset will not reduct {{i.quantity}} {{ i.asset_name }}'s asset from the total {{ i.asset_name }}'s asset, if you want to reduct it from database go to all asset and update the asset, this only delete the asset history.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form method="POST" action="{% url 'deleteasset' i.pk %}">
-                                            {% csrf_token %}
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        </tbody>
-                      </table>
-                    </div>
-                    <!-- Table ends -->
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Row ends -->
-
-          </div>
-          <!-- App body ends -->
-
-    <!-- *************
-			************ JavaScript Files *************
-		************* -->
-    <!-- Required jQuery first, then Bootstrap Bundle JS -->
-    {% comment %} <script src="{% static 'web/js/jquery.min.js' %}"></script> {% endcomment %}
-    {% comment %} <script src="{% static 'web/js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
-    {% comment %} <script src="{% static 'web/js/moment.min.js' %}"></script> {% endcomment %}
-
-    <!-- *************
-			************ Vendor Js Files *************
-		************* -->
-
-    <!-- Overlay Scroll JS -->
-    {% comment %} <script src="{% static 'web/js/jquery.overlayScrollbars.min.js' %}"></script> {% endcomment %}
-    {% comment %} <script src="{% static 'web/js/custom-scrollbar.js' %}"></script>  {% endcomment %}
-
-    <!-- Data Tables -->
-    <script src="{% static 'web/js/dataTables.min.js' %}"></script>
-    <script src="{% static 'web/js/dataTables.bootstrap.min.js' %}"></script>
-    <script src="{% static 'web/js/custom-datatables.js' %}"></script>
-
-    <!-- Custom JS files -->
-    {% comment %} <script src="{% static 'web/js/custom.js' %}"></script> {% endcomment %}
-  
-
-</body></html>
-
+</div>
+<!-- App body ends -->
 {% endblock %}

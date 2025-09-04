@@ -2,193 +2,230 @@
 {% load static %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Precious Honey Update Asset</title>
-
-    <!-- Meta -->
-    {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
-    <meta property="og:title" content="Admin Templates - Dashboard Templates">
-    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
-    <meta property="og:type" content="Website">
-    <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
-
-    <!-- *************
-		************ CSS Files *************
-	************* -->
-    <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
-    <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
-
-    <!-- *************
-		************ Vendor Css Files *************
-	************ -->
-
-    <!-- Scrollbar CSS -->
-    <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
-
-    <!-- Uploader CSS -->
-    <link rel="stylesheet" href="{% static 'web/css/dropzone.min.css' %}">
-
-    <!-- Quill Editor -->
-    <link rel="stylesheet" href="{% static 'web/css/quill.core.css' %}">
-</head>
-
-<body>
-
-<!-- Loading starts -->
-<div id="loading-wrapper">
-    <div class="spin-wrapper">
-        <div class="spin">
-            <div class="inner"></div>
-        </div>
-        <div class="spin">
-            <div class="inner"></div>
-        </div>
-        <div class="spin">
-            <div class="inner"></div>
-        </div>
-        <div class="spin">
-            <div class="inner"></div>
-        </div>
-        <div class="spin">
-            <div class="inner"></div>
-        </div>
-        <div class="spin">
-            <div class="inner"></div>
-        </div>
-    </div>
-</div>
-<!-- Loading ends -->
-
-<!-- App hero header starts -->
 <div class="app-hero-header d-flex align-items-center">
-
-    <!-- Breadcrumb starts -->
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
-            <a href="{% url 'home' %}">Home</a>
-        </li>
-        <li class="breadcrumb-item text-primary" aria-current="page">
-            Update asset
-        </li>
-    </ol>
-    <!-- Breadcrumb ends -->
-
-    <!-- Sales stats starts -->
-    <div class="ms-auto d-lg-flex d-none flex-row">
-        <div class="d-flex flex-row gap-1 day-sorting">
-            <button class="btn btn-sm btn-primary">assets</button>
-        </div>
-    </div>
-    <!-- Sales stats ends -->
-
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+      <a href="{% url 'home' %}">Home</a>
+    </li>
+    <li class="breadcrumb-item text-primary" aria-current="page">Update Asset</li>
+  </ol>
 </div>
-<!-- App Hero header ends -->
 
-<!-- App body starts -->
 <div class="app-body">
+  <div class="row gx-3">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-body">
 
-    <!-- Row starts -->
-    <div class="row gx-3">
-        <div class="col-xl-12">
-            <div class="card">
-                <div class="card-body">
+          {% for k in messages %}
+            <div class="alert alert-info py-2 mb-3">{{ k }}</div>
+          {% endfor %}
 
-                    <!-- Custom tabs starts -->
-                    <div class="custom-tabs-container">
+          <form method="POST" enctype="multipart/form-data" action="{% url 'updateasset' asset_instance.pk %}">
+            {% csrf_token %}
 
-                        <!-- Nav tabs starts -->
-                        <ul class="nav nav-tabs" id="customTab2" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="tab-oneA" data-bs-toggle="tab" href="#oneA" role="tab" aria-controls="oneA" aria-selected="true"><i class="ri-briefcase-4-line"></i> asset Update</a>
-                            </li>
-                        </ul>
-                        <!-- Nav tabs ends -->
-
-                        <!-- Tab content starts -->
-                        <div class="tab-content h-350">
-                            {% for k in messages %}
-                            <p style="color:red;">{{k}}</p>
-                            {% endfor %}
-                            <div class="tab-pane fade show active" id="oneA" role="tabpanel">
-
-                                <form method="POST" enctype="multipart/form-data" action="{% url 'updateasset' asset_instance.pk %}">
-                                    {% csrf_token %}
-                                    <!-- Row starts -->
-                                    <div class="row gx-3">
-                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="a1">Asset Name <span class="text-danger">*</span></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text">
-                                                        <i class="ri-account-circle-line"></i>
-                                                    </span>
-                                                    <input type="text" class="form-control" name="asset_name" id="a1" placeholder="Enter Asset Name" value="{{ form.asset_name.value|default:asset_instance.asset_name }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xxl-3 col-lg-4 col-sm-6">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="a2">Quantity <span class="text-danger">*</span></label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text">
-                                                        <i class="ri-account-circle-line"></i>
-                                                    </span>
-                                                    <input type="text" class="form-control" name="quantity" id="a2" placeholder="Enter Quantity" value="{{ form.quantity.value|default:asset_instance.quantity }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Row ends -->
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Tab content ends -->
-                    </div>
-                    <!-- Custom tabs ends -->
-
-                    <div class="d-flex gap-2 justify-content-end mt-4">
-                        <button type="reset" class="btn btn-outline-secondary">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Update asset</button>
-                    </div>
-                </form>
-
+            <div class="row gx-3">
+              <!-- Serial Number (read-only) -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="serial_number">Serial Number</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="ri-hashtag"></i></span>
+                    <input type="text" class="form-control" id="serial_number" value="{{ asset_instance.serial_number }}" readonly>
+                  </div>
                 </div>
+              </div>
+
+              <!-- Asset Name -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="asset_name">Asset Name <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="ri-briefcase-4-line"></i></span>
+                    <input type="text" class="form-control" name="asset_name" id="asset_name" placeholder="Enter Asset Name" value="{{ asset_instance.asset_name }}" required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Category (choices) -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="category">Category</label>
+                  <select class="form-select" name="category" id="category">
+                    {% with current=asset_instance.category %}
+                      <option value="Tables" {% if current == "Tables" %}selected{% endif %}>Tables</option>
+                      <option value="Chairs" {% if current == "Chairs" %}selected{% endif %}>Chairs</option>
+                      <option value="Computers" {% if current == "Computers" %}selected{% endif %}>Computers</option>
+                      <option value="Motocycles" {% if current == "Motocycles" %}selected{% endif %}>Motocycles</option>
+                      <option value="Beehives" {% if current == "Beehives" %}selected{% endif %}>Beehives</option>
+                      <option value="Packages (kg)" {% if current == "Packages (kg)" %}selected{% endif %}>Packages (kg)</option>
+                      <option value="Labels" {% if current == "Labels" %}selected{% endif %}>Labels</option>
+                      <option value="Buckets" {% if current == "Buckets" %}selected{% endif %}>Buckets</option>
+                      <option value="Bee suit" {% if current == "Bee suit" %}selected{% endif %}>Bee suit</option>
+                      <option value="Gloves" {% if current == "Gloves" %}selected{% endif %}>Gloves</option>
+                      <option value="Hire tools" {% if current == "Hire tools" %}selected{% endif %}>Hire tools</option>
+                      <option value="Bee smoker" {% if current == "Bee smoker" %}selected{% endif %}>Bee smoker</option>
+                      <option value="Honey press" {% if current == "Honey press" %}selected{% endif %}>Honey press</option>
+                      <option value="Honey strainer" {% if current == "Honey strainer" %}selected{% endif %}>Honey strainer</option>
+                      <option value="Sandles" {% if current == "Sandles" %}selected{% endif %}>Sandles</option>
+                      <option value="Apron" {% if current == "Apron" %}selected{% endif %}>Apron</option>
+                      <option value="Cars" {% if current == "Cars" %}selected{% endif %}>Cars</option>
+                      <option value="Filling Machine" {% if current == "Filling Machine" %}selected{% endif %}>Filling Machine</option>
+                      <option value="Heating Tank" {% if current == "Heating Tank" %}selected{% endif %}>Heating Tank</option>
+                      <option value="Printers" {% if current == "Printers" %}selected{% endif %}>Printers</option>
+                      <option value="Filter Pump" {% if current == "Filter Pump" %}selected{% endif %}>Filter Pump</option>
+                      <option value="Storage Tank" {% if current == "Storage Tank" %}selected{% endif %}>Storage Tank</option>
+                      <option value="Honey Pressor" {% if current == "Honey Pressor" %}selected{% endif %}>Honey Pressor</option>
+                      <option value="Cartering Machine" {% if current == "Cartering Machine" %}selected{% endif %}>Cartering Machine</option>
+                      <option value="Digital Refractometor" {% if current == "Digital Refractometor" %}selected{% endif %}>Digital Refractometor</option>
+                      <option value="Analogy Refractometor" {% if current == "Analogy Refractometor" %}selected{% endif %}>Analogy Refractometor</option>
+                    {% endwith %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Assigned To -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="assigned_to">Assigned To</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="ri-user-line"></i></span>
+                    <input type="text" class="form-control" name="assigned_to" id="assigned_to" placeholder="e.g. John Doe / Dept" value="{{ asset_instance.assigned_to }}">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="location">Location</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="ri-map-pin-line"></i></span>
+                    <input type="text" class="form-control" name="location" id="location" placeholder="e.g. Store A / Main Office" value="{{ asset_instance.location }}">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Purchase Date -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="purchase_date">Purchase Date</label>
+                  <input type="date" class="form-control" name="purchase_date" id="purchase_date" value="{{ asset_instance.purchase_date|date:'Y-m-d' }}">
+                </div>
+              </div>
+
+              <!-- Purchase Cost -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="purchase_cost">Purchase Cost</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="ri-cash-line"></i></span>
+                    <input type="number" step="0.01" class="form-control" name="purchase_cost" id="purchase_cost" placeholder="0.00" value="{{ asset_instance.purchase_cost }}">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Current Value -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="current_value">Current Value</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="ri-currency-line"></i></span>
+                    <input type="number" step="0.01" class="form-control" name="current_value" id="current_value" placeholder="0.00" value="{{ asset_instance.current_value }}">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Depreciation Rate (%) -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="depreciation_rate">Depreciation Rate (%)</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="ri-percent-line"></i></span>
+                    <input type="number" step="0.01" class="form-control" name="depreciation_rate" id="depreciation_rate" placeholder="e.g. 10.00" value="{{ asset_instance.depreciation_rate }}">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Expected Life (years) -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="expected_life_years">Expected Life (years)</label>
+                  <input type="number" step="1" min="0" class="form-control" name="expected_life_years" id="expected_life_years" placeholder="e.g. 5" value="{{ asset_instance.expected_life_years }}">
+                </div>
+              </div>
+
+              <!-- Status (choices) -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="status">Status</label>
+                  <select class="form-select" name="status" id="status">
+                    {% with current=asset_instance.status %}
+                      <option value="active" {% if current == "active" %}selected{% endif %}>Active</option>
+                      <option value="inactive" {% if current == "inactive" %}selected{% endif %}>Inactive</option>
+                      <option value="maintenance" {% if current == "maintenance" %}selected{% endif %}>Under Maintenance</option>
+                      <option value="disposed" {% if current == "disposed" %}selected{% endif %}>Disposed</option>
+                    {% endwith %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Condition (choices) -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="condition">Condition</label>
+                  <select class="form-select" name="condition" id="condition">
+                    {% with current=asset_instance.condition %}
+                      <option value="new" {% if current == "new" %}selected{% endif %}>New</option>
+                      <option value="good" {% if current == "good" %}selected{% endif %}>Good</option>
+                      <option value="fair" {% if current == "fair" %}selected{% endif %}>Fair</option>
+                      <option value="needs_repair" {% if current == "needs_repair" %}selected{% endif %}>Needs Repair</option>
+                      <option value="broken" {% if current == "broken" %}selected{% endif %}>Broken</option>
+                    {% endwith %}
+                  </select>
+                </div>
+              </div>
+
+              <!-- Warranty Expiry -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="warranty_expiry">Warranty Expiry</label>
+                  <input type="date" class="form-control" name="warranty_expiry" id="warranty_expiry" value="{{ asset_instance.warranty_expiry|date:'Y-m-d' }}">
+                </div>
+              </div>
+
+              <!-- Last Service Date -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="last_service_date">Last Service Date</label>
+                  <input type="date" class="form-control" name="last_service_date" id="last_service_date" value="{{ asset_instance.last_service_date|date:'Y-m-d' }}">
+                </div>
+              </div>
+
+              <!-- Next Service Due -->
+              <div class="col-xxl-4 col-lg-4 col-sm-6">
+                <div class="mb-3">
+                  <label class="form-label" for="next_service_due">Next Service Due</label>
+                  <input type="date" class="form-control" name="next_service_due" id="next_service_due" value="{{ asset_instance.next_service_due|date:'Y-m-d' }}">
+                </div>
+              </div>
+
+            </div> <!-- /row -->
+
+            <div class="d-flex gap-2 justify-content-end mt-4">
+              <a href="{% url 'assethistory' asset_instance.category %}" class="btn btn-outline-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">Update Asset</button>
             </div>
+          </form>
+
+          <div class="mt-3 small text-muted">
+            Created: {{ asset_instance.date_created }} • Updated: {{ asset_instance.date_updated }}
+          </div>
+
         </div>
+      </div>
     </div>
-    <!-- Row ends -->
-
+  </div>
 </div>
-<!-- App body ends -->
-
-<!-- *************
-    ************ JavaScript Files *************
-************* -->
-<!-- Required jQuery first, then Bootstrap Bundle JS -->
-{% comment %} <script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/moment.min.js"></script> {% endcomment %}
-
-<!-- *************
-    ************ Vendor Js Files *************
-************* -->
-
-<!-- Overlay Scroll JS -->
-{% comment %} <script src="js/jquery.overlayScrollbars.min.js"></script> {% endcomment %}
-{% comment %} <script src="js/custom-scrollbar.js"></script> {% endcomment %}
-
-<!-- Dropzone JS -->
-<script src="{% static 'web/js/dropzone.min.js' %}"></script>
-
-<!-- Quill Editor JS -->
-<script src="{% static 'web/js/quill.min.js' %}"></script>
-<script src="{% static 'web/js/custom_1.js' %}"></script>
-
-</body></html>
-
 {% endblock %}

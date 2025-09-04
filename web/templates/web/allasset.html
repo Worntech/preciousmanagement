@@ -94,160 +94,40 @@
                   <div class="card-body">
 
                     <!-- Table starts -->
-                    <div class="table-responsive">
-                      <table id="basicExample" class="table truncate m-0 align-middle">
-                        <thead>
-                          <tr>
-                            <th>Asset Name</th>
-                            <th>Quantity</th>
-                          </tr>
-                        </thead>
-
-                        {% for allasset in allassetss %}
-                          <tr>
-                            <td>
-                              Tables
-                            </td>
-                            <td>{{allasset.Tables}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Chairs
-                            </td>
-                            <td>{{allasset.Chairs}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Computers
-                            </td>
-                            <td>{{allasset.Computers}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Motocycles
-                            </td>
-                            <td>{{allasset.Motocycles}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Beehives
-                            </td>
-                            <td>{{allasset.Beehives}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Packages
-                            </td>
-                            <td>{{allasset.Packages}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Labels
-                            </td>
-                            <td>{{allasset.Labels}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Buckets
-                            </td>
-                            <td>{{allasset.Buckets}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Bee Suit
-                            </td>
-                            <td>{{allasset.Bee_suit}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Gloves
-                            </td>
-                            <td>{{allasset.Gloves}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Hire Tools
-                            </td>
-                            <td>{{allasset.Hire_tools}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Bee Smoker
-                            </td>
-                            <td>{{allasset.Bee_smoker}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Honey Press
-                            </td>
-                            <td>{{allasset.Honey_press}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Honey Strainer
-                            </td>
-                            <td>{{allasset.Honey_strainer}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Sandles
-                            </td>
-                            <td>{{allasset.Sandles}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Apron
-                            </td>
-                            <td>{{allasset.Apron}}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Edit
-                            </td>
-                            <td><a href="{% url 'updateallasset' allasset.id %}" class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit Asset Details">
-                              <i class="ri-edit-box-line"></i>
-                            </a>
-                          </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              Delete
-                            </td>
-                            <td>
-                              <button 
-                              class="btn btn-outline-danger btn-sm" 
-                              data-bs-toggle="modal" 
-                              data-bs-target="#deleteModal{{ allasset.pk }}">
-                              <i class="ri-delete-bin-line"></i>
-                           </button>
-                          </td>
-                          </tr>
-
-                          <!-- Delete Confirmation Modal -->
-                          <div class="modal fade" id="deleteModal{{ allasset.pk }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ allasset.pk }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteModalLabel{{ allasset.pk }}">Confirm Deletion</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Are you sure you want to delete all Asset? <br><br>
-                                        Deleting this asset will delete all the asset from the database of the company, if you want to delete or reduce specific asset go to the asset history and delete or edit asset in the edit button.
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form method="POST" action="{% url 'deleteallasset' allasset.pk %}">
-                                            {% csrf_token %}
-                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="card">
+                      <div class="card-header">
+                        <h5 class="card-title">All Assets Summary</h5>
+                      </div>
+                      <div class="card-body">
+                        <div class="table-responsive">
+                          <table class="table table-hover align-middle">
+                            <thead class="table-dark">
+                              <tr>
+                                <th>Asset Category</th>
+                                <th>Total Quantity</th>
+                                <th>View</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for asset in assets_summary %}
+                              <tr>
+                                <td>{{ asset.category }}</td>
+                                <td>{{ asset.total }}</td>
+                                <td>
+                                  <a href="{% url 'assethistory' asset.category|urlencode %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="ri-eye-line"></i> View
+                                  </a>
+                                </td>
+                              </tr>
+                              {% empty %}
+                              <tr>
+                                <td colspan="3" class="text-center">No assets found</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
                         </div>
-                          {% endfor %}
-                        </tbody>
-                      </table>
+                      </div>
                     </div>
                     <!-- Table ends -->
 

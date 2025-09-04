@@ -1,0 +1,27 @@
+{% extends "web/base.html" %}
+{% block content %}
+<h2>Orders</h2>
+<a href="{% url 'customer_search' %}" class="btn btn-primary">New Order</a>
+<table class="table mt-3">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Customer</th>
+      <th>Total</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+    <tr>
+      <td>{{ order.id }}</td>
+      <td>{{ order.customer }}</td>
+      <td>{{ order.total_amount }}</td>
+      <td>{{ order.get_status_display }}</td>
+      <td><a href="{% url 'order_detail' order.pk %}">View</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

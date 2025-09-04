@@ -1,0 +1,99 @@
+{% extends "web/base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <h4 class="mb-0">Parties</h4>
+    <a href="{% url 'party_create' %}" class="btn btn-primary ms-auto">Add Party</a>
+  </div>
+
+  <form method="get" class="row g-2 mb-3">
+    <div class="col-sm-10">
+      <input type="search" name="q" value="{{ q }}" class="form-control" placeholder="Search by name, email or phone">
+    </div>
+    <div class="col-sm-2 d-grid">
+      <button class="btn btn-outline-secondary">Search</button>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th class="text-end">Borrowed (from us)</th>
+          <th class="text-end">Paid</th>
+          <th class="text-end">Due →Us / We Owe</th>
+          <th class="text-center">Status</th>
+          <th class="text-end" style="width:160px">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in page_obj.object_list %}
+          {% with t=p.totals_for_display %}
+          <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.email|default:"—" }}</td>
+            <td>{{ p.phone|default:"—" }}</td>
+            <td class="text-end">{{ t.total_borrowed_from_us|floatformat:0|intcomma }}</td>
+            <td class="text-end">{{ t.total_paid_to_us|floatformat:0|intcomma }}</td>
+            <td class="text-end">
+              {% if t.due_to_us > 0 %}
+                {{ t.due_to_us|floatformat:0|intcomma }}
+              {% elif t.we_owe > 0 %}
+                −{{ t.we_owe|floatformat:0|intcomma }}
+              {% else %}
+                0
+              {% endif %}
+            </td>
+            <td class="text-center">
+              {% if t.status == "Settled" %}
+                <span class="badge bg-secondary">Settled</span>
+              {% elif t.status == "Owes us" %}
+                <span class="badge bg-success">Owes us</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">We owe</span>
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <a href="{% url 'party_update' p.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            </td>
+          </tr>
+          {% endwith %}
+        {% empty %}
+          <tr><td colspan="8" class="text-center text-muted py-4">No parties found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+  <nav class="mt-3">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">«</a></li>
+      {% else %}<li class="page-item disabled"><span class="page-link">«</span></li>{% endif %}
+
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+          <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ page_obj.next_page_number }}">»</a></li>
+      {% else %}<li class="page-item disabled"><span class="page-link">»</span></li>{% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+  <div class="mt-3">
+    <a href="{% url 'loan_list' %}" class="btn btn-outline-primary btn-sm">Loans</a>
+    <a href="{% url 'repayment_list' %}" class="btn btn-outline-primary btn-sm">Repayments</a>
+  </div>
+</div>
+{% endblock %}

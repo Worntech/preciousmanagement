@@ -2,27 +2,14 @@
 {% load static %}
 {% block content %}
 
+{% if designation == "Collection Officer" or designation == "CEO" or designation == "Manager" or designation == "Store Keeper" or designation == "Bee Keeper" %}
 <!DOCTYPE html><html lang="en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Precious Honey all Farmers</title>
 
-    <!-- Meta -->
-    {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
-    <meta property="og:title" content="Admin Templates - Dashboard Templates">
-    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
-    <meta property="og:type" content="Website">
-    <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
-
-    <!-- *************
-		************ CSS Files *************
-	************* -->
     <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
     <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
-
-    <!-- *************
-		************ Vendor Css Files *************
-	************ -->
 
     <!-- Scrollbar CSS -->
     <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
@@ -133,19 +120,22 @@
                             <td>{{i.mobile_number}}</td>
                             <td>{{i.district}}, {{i.region}}</td>
                             <td>
+                              {% if designation == "Manager" or designation == "CEO" %}
                               <button 
                                 class="btn btn-outline-danger btn-sm" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#deleteModal{{ i.pk }}">
                                 <i class="ri-delete-bin-line"></i>
                              </button>
-
+                             {% endif %}
+                             {% if designation == "Collection Officer" or designation == "CEO" or designation == "Manager" or designation == "Bee Keeper" %}
                                 <a href="{% url 'updatefarmer' i.id %}" class="btn btn-outline-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Edit Farmer Details">
                                   <i class="ri-edit-box-line"></i>
                                 </a>
                                 <a href="{% url 'viewfarmer' i.id %}" class="btn btn-outline-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View Farmer">
                                   <i class="ri-eye-line"></i>
                                 </a>
+                                {% endif %}
                               </div>
                             </td>
                           </tr>
@@ -183,23 +173,6 @@
             <!-- Row ends -->
 
           </div>
-          <!-- App body ends -->
-
-    <!-- *************
-			************ JavaScript Files *************
-		************* -->
-    <!-- Required jQuery first, then Bootstrap Bundle JS -->
-    {% comment %} <script src="{% static 'web/js/jquery.min.js' %}"></script> {% endcomment %}
-    {% comment %} <script src="{% static 'web/js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
-    {% comment %} <script src="{% static 'web/js/moment.min.js' %}"></script> {% endcomment %}
-
-    <!-- *************
-			************ Vendor Js Files *************
-		************* -->
-
-    <!-- Overlay Scroll JS -->
-    {% comment %} <script src="{% static 'web/js/jquery.overlayScrollbars.min.js' %}"></script> {% endcomment %}
-    {% comment %} <script src="{% static 'web/js/custom-scrollbar.js' %}"></script>  {% endcomment %}
 
     <!-- Data Tables -->
     <script src="{% static 'web/js/dataTables.min.js' %}"></script>
@@ -211,5 +184,5 @@
   
 
 </body></html>
-
+{% endif %}
 {% endblock %}

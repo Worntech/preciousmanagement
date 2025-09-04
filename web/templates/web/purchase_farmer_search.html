@@ -1,0 +1,65 @@
+{% extends "web/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <h4>Tafuta Mkulima kwa Ripoti</h4>
+
+  <form method="get" class="row g-2 my-3">
+    <div class="col-md-8">
+      <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Tafuta kwa jina, simu, NIDA au card no...">
+    </div>
+    <div class="col-md-4">
+      <button class="btn btn-primary w-100">Tafuta</button>
+    </div>
+  </form>
+
+  {% if page_obj %}
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Mkulima</th>
+            <th>Simu</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in page_obj.object_list %}
+          <tr>
+            <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+            <td>{{ f.first_name }} {{ f.last_name }}</td>
+            <td>{{ f.phone }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-success"
+                 href="{% url 'purchase_report_farmer_default' f.id %}">
+                 Ona Ripoti (Mwezi)
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4" class="text-center text-muted">Hakuna matokeo.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <nav>
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">«</a></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">
+          Ukurasa {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span></li>
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ page_obj.next_page_number }}">»</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

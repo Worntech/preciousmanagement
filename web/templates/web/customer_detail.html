@@ -1,0 +1,80 @@
+{% extends "web/base.html" %}
+{% block content %}
+{% include "web/_styles.html" %}
+<div class="container py-4 honey-bg rounded">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="honey-text mb-0">{{ customer.name }} <small class="text-muted">({{ customer.code }})</small></h3>
+    <div>
+      <a class="btn btn-sm btn-outline-warning" href="{% url 'customer_update' customer.pk %}">Edit</a>
+      <a class="btn btn-sm btn-outline-danger" href="{% url 'customer_delete' customer.pk %}">Delete</a>
+      <a class="btn btn-sm btn-outline-secondary" href="{% url 'customer_list' %}">Back</a>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header">Identity</div>
+        <div class="card-body">
+          <p class="mb-1"><strong>Company:</strong> {{ customer.company_name|default:"—" }}</p>
+          <p class="mb-1"><strong>Contact Person:</strong> {{ customer.contact_person|default:"—" }}</p>
+          <p class="mb-1"><strong>Status:</strong>
+            {% if customer.is_active %}<span class="badge text-bg-success">Active</span>
+            {% else %}<span class="badge text-bg-secondary">Inactive</span>{% endif %}
+          </p>
+          <p class="mb-1"><strong>Created:</strong> {{ customer.created_at|date:"Y-m-d H:i" }}</p>
+          <p class="mb-0"><strong>Updated:</strong> {{ customer.updated_at|date:"Y-m-d H:i" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header">Contacts</div>
+        <div class="card-body">
+          <p class="mb-1"><strong>Phone:</strong> {{ customer.phone|default:"—" }}</p>
+          <p class="mb-1"><strong>Alt Phone:</strong> {{ customer.alt_phone|default:"—" }}</p>
+          <p class="mb-1"><strong>Email:</strong> {{ customer.email|default:"—" }}</p>
+          <p class="mb-0"><strong>Alt Email:</strong> {{ customer.alt_email|default:"—" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header">Address</div>
+        <div class="card-body">
+          <p class="mb-1"><strong>Address 1:</strong> {{ customer.address_line1|default:"—" }}</p>
+          <p class="mb-1"><strong>Address 2:</strong> {{ customer.address_line2|default:"—" }}</p>
+          <p class="mb-1"><strong>City/Region:</strong> {{ customer.city|default:"—" }} / {{ customer.region|default:"—" }}</p>
+          <p class="mb-1"><strong>Country:</strong> {{ customer.country|default:"—" }}</p>
+          <p class="mb-0"><strong>Postal Code:</strong> {{ customer.postal_code|default:"—" }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header">Tax & Finance</div>
+        <div class="card-body">
+          <p class="mb-1"><strong>TIN:</strong> {{ customer.tin|default:"—" }}</p>
+          <p class="mb-1"><strong>VAT:</strong> {{ customer.vat_number|default:"—" }}</p>
+          <p class="mb-1"><strong>Payment Terms:</strong> {{ customer.get_payment_terms_display }}</p>
+          <p class="mb-0"><strong>Credit Limit:</strong> {{ customer.credit_limit }}</p>
+        </div>
+      </div>
+    </div>
+
+    {% if customer.notes %}
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header">Notes</div>
+        <div class="card-body">
+          <p class="mb-0">{{ customer.notes|linebreaks }}</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

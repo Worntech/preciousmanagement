@@ -1,28 +1,14 @@
 {% extends 'web/base.html' %}
 {% load static %}
 {% block content %}
-
+{% if designation == "Collection Officer" or designation == "CEO" or designation == "Manager" or designation == "Bee Keeper" %}
 <!DOCTYPE html><html lang="en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Precious Honey Add Farmer</title>
 
-    <!-- Meta -->
-    {% comment %} <meta name="description" content="Marketplace for Bootstrap Admin Dashboards">
-    <meta property="og:title" content="Admin Templates - Dashboard Templates">
-    <meta property="og:description" content="Marketplace for Bootstrap Admin Dashboards">
-    <meta property="og:type" content="Website">
-    <link rel="shortcut icon" href="images/favicon.svg"> {% endcomment %}
-
-    <!-- *************
-		************ CSS Files *************
-	************* -->
     <link rel="stylesheet" href="{% static 'web/css/remixicon.css' %}">
     <link rel="stylesheet" href="{% static 'web/css/main.min.css' %}">
-
-    <!-- *************
-		************ Vendor Css Files *************
-	************ -->
 
     <!-- Scrollbar CSS -->
     <link rel="stylesheet" href="{% static 'web/css/OverlayScrollbars.min.css' %}">
@@ -281,17 +267,6 @@
                             </div>
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                               <div class="mb-3">
-                                <label class="form-label" for="a4">Top Bar behives <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                  <span class="input-group-text">
-                                    <i class="ri-secure-payment-line"></i>
-                                  </span>
-                                  <input type="text" class="form-control" name="top_bar_beehives"  id="a4" placeholder="No of Top Bar behives">
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-xxl-3 col-lg-4 col-sm-6">
-                              <div class="mb-3">
                                 <label class="form-label" for="a4">TCH behives <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                   <span class="input-group-text">
@@ -347,12 +322,78 @@
                             </div>
                             <div class="col-xxl-3 col-lg-4 col-sm-6">
                               <div class="mb-3">
-                                <label class="form-label" for="a4">Farmer Background <span class="text-danger">*</span></label>
+                                <label class="form-label" for="a4">Start Beekeeping <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                   <span class="input-group-text">
                                     <i class="ri-secure-payment-line"></i>
                                   </span>
-                                  <input type="text" class="form-control" name="farmer_background" id="a4" placeholder="Background of Farmer">
+                                  <input type="text" class="form-control" name="mwanzo" id="a4" placeholder="When did you begin beekeeping?">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Your Goal <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="malengo" id="a4" placeholder="What was your goal in starting?">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Inspiration <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="muhamasishaji" id="a4" placeholder="Who inspired you to begin?">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Honey Output <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="kiasi_mwisho" id="a4" placeholder="What was your last honey yield?">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Future Plans <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="kufanikisha_nin" id="a4" placeholder="What do you hope to achieve in beekeeping?">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Environment Role <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="kusaidia_mazingira" id="a4" placeholder="Do you think beekeeping helps the environment?">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xxl-3 col-lg-4 col-sm-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="a4">Family View <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                  <span class="input-group-text">
+                                    <i class="ri-secure-payment-line"></i>
+                                  </span>
+                                  <input type="text" class="form-control" name="familia_mtazamo" id="a4" placeholder="What does your family think about your beekeeping?">
                                 </div>
                               </div>
                             </div>
@@ -409,5 +450,6 @@
   
 
 </body></html>
+{% endif %}
 
 {% endblock %}

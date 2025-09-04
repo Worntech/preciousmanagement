@@ -1,0 +1,187 @@
+{% extends "web/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <h3>Order #{{ order.id }} - {{ order.customer.name }}</h3>
+    <div class="d-flex gap-2">
+      {% comment %} ("draft", "Draft"),
+        ("confirmed", "Confirmed"),
+        ("paid", "Paid"),
+        ("cancelled", "Cancelled"), {% endcomment %}
+      {% if can_edit %}
+      {% if designation == "CEO" or designation == "Manager" or designation == "Finance Officer" %}
+        <a href="{% url 'order_mark_paid' order.id %}" class="btn btn-success">Mark Paid</a>
+        <a href="{% url 'order_cancel_paid' order.id %}" class="btn btn-warning">Cancel Paid</a>
+        {% endif %}
+      {% elif order.status == 'paid' %}
+      {% if designation == "CEO" or designation == "Manager" %}
+        <a href="{% url 'order_cancel_paid' order.id %}" class="btn btn-warning">Cancel Paid</a>
+        {% endif %}
+        {% elif order.status == 'cancelled' %}
+        {% if designation == "CEO" or designation == "Manager" %}
+        <a href="{% url 'order_mark_paid' order.id %}" class="btn btn-success">Mark Paid</a>
+        {% endif %}
+      {% endif %}
+      <a href="{% url 'order_invoice' order.id %}" class="btn btn-outline-primary">Billing Invoice</a>
+      <a href="{% url 'order_proforma' order.id %}" class="btn btn-outline-secondary">Proforma</a>
+      <a href="{% url 'order_purchase_order' order.id %}" class="btn btn-outline-secondary">Purchase Order</a>
+      <a href="{% url 'order_delivery_note' order.id %}" class="btn btn-outline-secondary">Delivery Note</a>
+      <a href="{% url 'order_grn' order.id %}" class="btn btn-outline-secondary">GRN</a>
+    </div>
+  </div>
+
+  <p>Status: <strong class="text-uppercase">{{ order.status }}</strong></p>
+  <p>Total: <strong>{{ order.total_amount }}</strong></p>
+
+  {% if formset %}
+    <form method="post" class="mt-3">
+      {% csrf_token %}
+      {{ formset.management_form }}
+
+      <div class="table-responsive">
+        <table class="table table-striped align-middle" id="items-table">
+          <thead class="table-light">
+            <tr>
+              <th>Product</th>
+              <th style="width:120px;">Qty</th>
+              <th style="width:160px;">Unit Price</th>
+              <th style="width:160px;">Subtotal</th>
+              <th style="width:80px;">Remove</th>
+            </tr>
+          </thead>
+          <tbody id="form-area">
+            {% for form in formset %}
+            <tr class="form-row">
+              {% for h in form.hidden_fields %}{{ h }}{% endfor %}
+
+              <td>
+                {{ form.product }}
+                {% for e in form.product.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+              </td>
+              <td>
+                {{ form.quantity }}
+                {% for e in form.quantity.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+              </td>
+              <td>
+                {{ form.unit_price }}
+                {% for e in form.unit_price.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+              </td>
+              <td class="subtotal-cell">
+                {% if form.instance.pk %}{{ form.instance.subtotal }}{% else %}&mdash;{% endif %}
+              </td>
+              <td class="text-center">
+                {% if is_read_only %}
+                  <span class="text-success fs-5" title="Completed">✓</span>
+                {% else %}
+                  {% if form.DELETE %}{{ form.DELETE.as_hidden }}{% endif %}
+                  <button type="button" class="btn btn-sm btn-outline-danger remove-row" title="Remove">×</button>
+                {% endif %}
+              </td>
+            </tr>
+
+            {% if form.non_field_errors %}
+              <tr><td colspan="5"><div class="alert alert-danger mb-2">{{ form.non_field_errors }}</div></td></tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if can_edit %}
+      <div class="d-flex gap-2">
+        <button type="button" id="add-form" class="btn btn-outline-primary">+ Add Another Item</button>
+        <button type="submit" class="btn btn-primary">Save Items</button>
+      </div>
+      {% endif %}
+    </form>
+  {% else %}
+    <h5 class="mt-3">Items</h5>
+    <table class="table table-striped">
+      <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
+      <tbody>
+      {% for item in order.items.all %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.unit_price }}</td>
+          <td>{{ item.subtotal }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+</div>
+
+{% if can_edit %}
+<script type="text/template" id="empty-form-template">
+<tr class="form-row">
+  {% for h in formset.empty_form.hidden_fields %}{{ h|safe }}{% endfor %}
+  <td>{{ formset.empty_form.product|safe }}</td>
+  <td>{{ formset.empty_form.quantity|safe }}</td>
+  <td>{{ formset.empty_form.unit_price|safe }}</td>
+  <td class="subtotal-cell">&mdash;</td>
+  <td class="text-center">
+    {% if formset.empty_form.DELETE %}{{ formset.empty_form.DELETE.as_hidden|safe }}{% endif %}
+    <button type="button" class="btn btn-sm btn-outline-danger remove-row" title="Remove">×</button>
+  </td>
+</tr>
+</script>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const READ_ONLY = {{ is_read_only|yesno:"true,false" }};
+  const formArea  = document.getElementById("form-area");
+
+  if (READ_ONLY) {
+    // Safety net (ingawa tayari tume-disable kwenye view)
+    document.querySelectorAll('#form-area input, #form-area select, #form-area textarea').forEach(el => {
+      el.setAttribute('disabled', 'disabled');
+    });
+    return;
+  }
+
+  const addBtn   = document.getElementById("add-form");
+  const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+  let formIdx = parseInt(totalFormsInput?.value || "0", 10);
+
+  function addRow() {
+    const tmplEl = document.getElementById("empty-form-template");
+    if (!tmplEl) return;
+    let html = tmplEl.innerHTML.replace(/__prefix__/g, String(formIdx));
+    formArea.insertAdjacentHTML("beforeend", html);
+    formIdx += 1;
+    totalFormsInput.value = String(formIdx);
+  }
+
+  if (formIdx === 0) addRow();
+  addBtn?.addEventListener("click", addRow);
+
+  formArea.addEventListener("click", function(e) {
+    if (!e.target.classList.contains("remove-row")) return;
+    const row = e.target.closest(".form-row");
+    const deleteField = row.querySelector('input[name$="-DELETE"]');
+    if (deleteField) {
+      deleteField.value = "on";
+      row.style.display = "none";
+    } else {
+      row.remove();
+      formIdx = Math.max(0, formIdx - 1);
+      totalFormsInput.value = String(formIdx);
+    }
+  });
+
+  formArea.addEventListener("input", function(e) {
+    const row = e.target.closest(".form-row");
+    if (!row) return;
+    const qtyInput = row.querySelector('input[name$="-quantity"]');
+    const priceInput = row.querySelector('input[name$="-unit_price"]');
+    const cell = row.querySelector(".subtotal-cell");
+    if (!qtyInput || !priceInput || !cell) return;
+    const q = parseFloat(qtyInput.value);
+    const p = parseFloat(priceInput.value);
+    cell.textContent = (!isNaN(q) && !isNaN(p)) ? (q * p).toFixed(2) : "—";
+  });
+});
+</script>
+{% endblock %}

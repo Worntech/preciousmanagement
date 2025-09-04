@@ -1,0 +1,79 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="app-hero-header d-flex align-items-center">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <i class="ri-home-8-line lh-1 pe-3 me-3 border-end"></i>
+      <a href="{% url 'home' %}">Home</a>
+    </li>
+    <li class="breadcrumb-item text-primary" aria-current="page">
+      All Products
+    </li>
+  </ol>
+  <div class="ms-auto">
+    <a href="#" class="btn btn-primary btn-sm">Add New Product</a>
+  </div>
+</div>
+
+<div class="app-body">
+  <div class="row gx-3">
+    <div class="col-sm-12">
+      <div class="card shadow-sm">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h5 class="card-title">Products Overview</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Product</th>
+                  <th>Current Stock</th>
+                  <th>Total Added</th>
+                  <th>No. of Histories</th>
+                  <th>Last Added</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for product in products %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="fw-semibold">{{ product.name }}</td>
+                    <td>{{ product.stock|intcomma }}</td>
+                    <td>{{ product.total_added|default:0|intcomma }}</td>
+                    <td>{{ product.history_count }}</td>
+                    <td>
+                      {% with last_history=product.histories.first %}
+                        {% if last_history %}
+                          {{ last_history.created_at|date:"Y-m-d H:i" }} 
+                          ({{ last_history.quantity }} pcs, {{ last_history.get_status_display }})
+                        {% else %}
+                          —
+                        {% endif %}
+                      {% endwith %}
+                    </td>
+                    <td>
+                      <a href="{% url 'product_history' product.id %}" class="btn btn-outline-primary btn-sm">
+                        <i class="ri-eye-line"></i> History
+                      </a>
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="7" class="text-center">No products found</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

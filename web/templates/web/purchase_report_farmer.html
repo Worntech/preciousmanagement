@@ -1,0 +1,132 @@
+{% extends "web/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h3 class="mb-0">Ripoti za Manunuzi — {{ farmer.first_name }} {{ farmer.last_name }}</h3>
+    <div>
+      <a href="{% url 'purchase_report_farmer' farmer.id 'day' %}" class="btn btn-sm {% if period == 'day' %}btn-honey{% else %}btn-outline-honey{% endif %}">Siku</a>
+      <a href="{% url 'purchase_report_farmer' farmer.id 'week' %}" class="btn btn-sm {% if period == 'week' %}btn-honey{% else %}btn-outline-honey{% endif %}">Wiki</a>
+      <a href="{% url 'purchase_report_farmer' farmer.id 'month' %}" class="btn btn-sm {% if period == 'month' %}btn-honey{% else %}btn-outline-honey{% endif %}">Mwezi</a>
+      <a href="{% url 'purchase_report_farmer' farmer.id 'quarter' %}" class="btn btn-sm {% if period == 'quarter' %}btn-honey{% else %}btn-outline-honey{% endif %}">Miezi 3</a>
+      <a href="{% url 'purchase_report_farmer' farmer.id 'half' %}" class="btn btn-sm {% if period == 'half' %}btn-honey{% else %}btn-outline-honey{% endif %}">Miezi 6</a>
+      <a href="{% url 'purchase_report_farmer' farmer.id 'year' %}" class="btn btn-sm {% if period == 'year' %}btn-honey{% else %}btn-outline-honey{% endif %}">Mwaka</a>
+    </div>
+  </div>
+
+  <!-- Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="text-muted small">Jumla ya Mauzo</div>
+              <h4 class="mb-0" id="grandTotal">{{ grand_total|floatformat:2 }}</h4>
+            </div>
+            <i class="ri-user-line fs-2 text-muted"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <h6 class="mb-3">Mwelekeo kwa kipindi: <span class="badge bg-light text-dark">{{ period|title }}</span></h6>
+      <canvas id="reportChart" height="120"></canvas>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h6 class="mb-0">Jedwali la Ripoti</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Kipindi</th>
+              <th>Jumla (TZS)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% if rows %}
+            {% for r in rows %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ r.label }}</td>
+                <td class="fw-semibold">{{ r.total|floatformat:2 }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+              <tr>
+                <td colspan="3" class="text-center text-muted py-4">Hakuna data ya kuonyesha kwa kipindi hiki.</td>
+              </tr>
+          {% endif %}
+          </tbody>
+          {% if rows %}
+          <tfoot>
+            <tr>
+              <th colspan="2" class="text-end">JUMLA:</th>
+              <th class="fw-bold">{{ grand_total|floatformat:2 }}</th>
+            </tr>
+          </tfoot>
+          {% endif %}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  (function() {
+    const labels = {{ rows|json_script:"rows_farmer_labels" }};
+    const values = {{ rows|json_script:"rows_farmer_values" }};
+
+    const parsedLabels = JSON.parse(document.getElementById("rows_farmer_labels").textContent).map(r => r.label ?? r);
+    const parsedValues = JSON.parse(document.getElementById("rows_farmer_values").textContent).map(r => r.total ?? r);
+
+    const ctx = document.getElementById('reportChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: parsedLabels,
+        datasets: [{
+          label: 'Jumla (TZS)',
+          data: parsedValues
+        }]
+      },
+      options: {
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return new Intl.NumberFormat().format(context.parsed.y);
+              }
+            }
+          },
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            ticks: {
+              callback: (v) => new Intl.NumberFormat().format(v)
+            }
+          }
+        }
+      }
+    });
+
+    const gt = document.getElementById('grandTotal');
+    if (gt) gt.innerText = new Intl.NumberFormat().format(parseFloat(gt.innerText || "0"));
+  })();
+</script>
+{% endblock %}

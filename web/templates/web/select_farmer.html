@@ -1,0 +1,29 @@
+{% extends "web/base.html" %}
+{% block title %}Chagua Mkulima — Honey ERP{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header"><h5 class="mb-0"><i class="ri-user-search-line"></i> Chagua Mkulima</h5></div>
+      <div class="card-body">
+        {% if farmers %}
+        <div class="list-group">
+          {% for f in farmers %}
+          <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+             href="{% url 'add_purchase' f.id %}">
+            <span>
+              <strong>{{ f.first_name }} {% if f.middle_name %}{{ f.middle_name }}{% endif %} {{ f.last_name }}</strong>
+              <small class="d-block text-muted">{{ f.village }}, {{ f.ward }}, {{ f.district }}</small>
+            </span>
+            <span class="badge rounded-pill badge-honey">{{ f.mobile_number }}</span>
+          </a>
+          {% endfor %}
+        </div>
+        {% else %}
+          <div class="empty-state">Hakuna matokeo.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

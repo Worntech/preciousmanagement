@@ -1,0 +1,11 @@
+{% extends "web/base.html" %}
+{% block content %}
+<div class="container py-4">
+  <h3 class="text-danger">Delete Product</h3>
+  <p>Are you sure you want to delete <strong>{{ product.name }}</strong>?</p>
+  <form method="post">{% csrf_token %}
+    <button class="btn btn-danger">Delete</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "web/base.html" %}
+{% load humanize %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <h4 class="mb-0">Loans (Borrow/Lend)</h4>
+    <a href="{% url 'loan_create' %}" class="btn btn-primary ms-auto">New Loan</a>
+  </div>
+
+  <form method="get" class="row g-2 mb-3">
+    <div class="col-sm-3">
+      <select name="type" class="form-select" onchange="this.form.submit()">
+        <option value="">All types</option>
+        <option value="borrow" {% if ftype == 'borrow' %}selected{% endif %}>Borrow</option>
+        <option value="lend" {% if ftype == 'lend' %}selected{% endif %}>Lend</option>
+      </select>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Party</th>
+          <th>Type</th>
+          <th class="text-end">This Loan Amount</th>
+          <th class="text-end">Paid So Far</th>
+          <th class="text-end">Still Owed</th>
+          <th class="text-center">Status</th>
+          <th>Note</th>
+          <th class="text-end">Applied</th>
+          <th>When</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in page_obj.object_list %}
+          {% with t=r.party.totals_for_display %}
+          <tr>
+            <td>{{ r.party.name }}</td>
+            <td>{{ r.type|title }}</td>
+
+            <!-- the amount for this specific loan row -->
+            <td class="text-end">{{ r.amount|floatformat:0|intcomma }}</td>
+
+            <!-- lifetime paid (incoming payments to us) by this party -->
+            <td class="text-end">{{ t.total_paid_to_us|floatformat:0|intcomma }}</td>
+
+            <!-- what’s still outstanding: show positive number if they owe us, or a negative sign if we owe them -->
+            <td class="text-end">
+              {% if t.due_to_us > 0 %}
+                {{ t.due_to_us|floatformat:0|intcomma }}
+              {% elif t.we_owe > 0 %}
+                −{{ t.we_owe|floatformat:0|intcomma }}
+              {% else %}
+                0
+              {% endif %}
+            </td>
+
+            <!-- status badge derived from the party’s net balance -->
+            <td class="text-center">
+              {% if t.status == "Settled" %}
+                <span class="badge bg-secondary">Settled</span>
+              {% elif t.status == "Owes us" %}
+                <span class="badge bg-success">Owes us</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">We owe</span>
+              {% endif %}
+            </td>
+
+            <td>{{ r.note|default:"" }}</td>
+            <td class="text-end">{% if r.applied %}✅{% else %}—{% endif %}</td>
+            <td>{{ r.created_at|date:"d M Y H:i" }}</td>
+          </tr>
+          {% endwith %}
+        {% empty %}
+          <tr><td colspan="9" class="text-center text-muted py-4">No loans yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "web/base.html" %}
+{% block title %}Purchase History — Honey ERP{% endblock %}
+{% block content %}
+{% include "web/_styles.html" %}
+
+<div class="container py-4 honey-bg rounded">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h3 class="honey-text mb-0">
+      <i class="ri-user-line"></i>
+      {{ farmer.first_name }} {% if farmer.middle_name %}{{ farmer.middle_name }}{% endif %} {{ farmer.last_name }}
+    </h3>
+    <a class="btn honey-btn text-white" href="{% url 'add_purchase' farmer.id %}">
+      <i class="ri-add-line"></i> New Purchase
+    </a>
+  </div>
+
+  {% if purchases %}
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th>
+            <th>Products</th>
+            <th>Items</th>
+            <th>Total Amount</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in purchases %}
+          <tr>
+            <td>{{ p.purchase_date|date:"M d, Y H:i" }}</td>
+            <td>
+              {% for it in p.items.all|slice:":3" %}
+                <span class="badge rounded-pill bg-light text-dark me-1">{{ it.product_name }}</span>
+              {% endfor %}
+              {% if p.items.count > 3 %}
+                <span class="badge rounded-pill badge-honey">+{{ p.items.count|add:"-3" }} more</span>
+              {% endif %}
+            </td>
+            <td>{{ p.items.count }}</td>
+            <td>
+              {% if p.total_amount %}
+                {{ p.total_amount }}
+              {% else %}
+                —
+              {% endif %}
+            </td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-primary" href="{% url 'purchase_detail' p.id %}">
+                <i class="ri-eye-line"></i> View
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="ri-inbox-unarchive-line fs-2 d-block mb-2 text-muted"></i>
+      <div class="text-muted">No purchases yet. Start by clicking <strong>New Purchase</strong> above.</div>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+.honey-bg { background: #fffdf6; }
+.honey-text { color: #a16207; }
+.honey-btn {
+  background: #fbbf24;
+  border-color: #f59e0b;
+}
+.honey-btn:hover { opacity:.95; color:#fff; }
+.badge-honey {
+  background: #fbbf24;
+  color: #fff;
+}
+.table td, .table th { vertical-align: middle; }
+</style>
+{% endblock %}

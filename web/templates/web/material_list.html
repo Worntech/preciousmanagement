@@ -1,0 +1,79 @@
+{% extends "web/base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="d-flex align-items-center gap-2 mb-3">
+    <h4 class="mb-0">Materials</h4>
+    <a href="{% url 'material_create' %}" class="btn btn-primary ms-auto">Add Material</a>
+  </div>
+
+  <form method="get" class="row g-2 mb-3">
+    <div class="col-sm-10">
+      <input type="search" name="q" value="{{ q }}" class="form-control" placeholder="Search material name...">
+    </div>
+    <div class="col-sm-2 d-grid">
+      <button class="btn btn-outline-secondary">Search</button>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Name</th>
+          <th class="text-center">Unit</th>
+          <th class="text-end">Stock</th>
+          <th class="text-center">Active</th>
+          <th class="text-end" style="width:220px">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in page_obj.object_list %}
+        <tr class="{% if not m.is_active %}table-secondary{% endif %}">
+          <td>{{ m.name }}</td>
+          <td class="text-center">{{ m.get_unit_display }}</td>
+          <td class="text-end">{{ m.stock }}</td>
+          <td class="text-center">
+            {% if m.is_active %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-secondary">No</span>{% endif %}
+          </td>
+          <td class="text-end">
+            <div class="btn-group">
+              <a href="{% url 'material_update' m.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+              <a href="{% url 'material_toggle' m.id %}" class="btn btn-sm btn-outline-warning">
+                {% if m.is_active %}Deactivate{% else %}Activate{% endif %}
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center text-muted py-4">No materials found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+  <nav class="mt-3">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ page_obj.previous_page_number }}">«</a></li>
+      {% else %}<li class="page-item disabled"><span class="page-link">«</span></li>{% endif %}
+
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}<li class="page-item active"><span class="page-link">{{ i }}</span></li>
+        {% else %}<li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ i }}">{{ i }}</a></li>{% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?q={{ q }}&page={{ page_obj.next_page_number }}">»</a></li>
+      {% else %}<li class="page-item disabled"><span class="page-link">»</span></li>{% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+  <div class="mt-3">
+    <a href="{% url 'material_seed_defaults' %}" class="btn btn-outline-secondary btn-sm">Seed Default Materials</a>
+    <a href="{% url 'receipt_list' %}" class="btn btn-outline-primary btn-sm">Receipts</a>
+    <a href="{% url 'requisition_list' %}" class="btn btn-outline-primary btn-sm">Requisitions</a>
+  </div>
+</div>
+{% endblock %}
